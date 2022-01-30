@@ -5,7 +5,7 @@ import Button from '../ui/Button';
 const SignupScreen = (props) => {
     return (
         <Card className={styles.input} title="Signup">
-            <form action="/action_page.php">
+            <form action="">
                 <label htmlFor="fname">First Name</label>
                 <input type="text" id="fname" name="firstname" placeholder="Your name.." />
                 <label htmlFor="lname">Last Name</label>
