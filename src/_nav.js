@@ -5,15 +5,16 @@ import { CNavGroup, CNavItem } from '@coreui/react'
 
 const _nav = [
   {
-    component: CNavItem,
-    name: 'Dashboard',
-    to: '/dashboard',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-  },
-  {
     component: CNavGroup,
-    name: 'User Management',
+    name: 'Settings',
+
     items: [
+      {
+        component: CNavItem,
+        name: 'Dashboard',
+        to: '/dashboard',
+        icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+      },
       {
         component: CNavItem,
         name: 'Users',
@@ -26,47 +27,11 @@ const _nav = [
         to: '/createUser',
         icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
       },
-    ],
-  },
-  {
-    component: CNavGroup,
-    name: 'Survey Management',
-    items: [
       {
         component: CNavItem,
         name: 'questionnaire',
         to: '/questionnaire',
         icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
-      },
-    ],
-  },
-  {
-    component: CNavGroup,
-    name: 'Pages',
-    items: [
-      {
-        component: CNavItem,
-        name: 'Login',
-        to: '/login',
-        icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'Register',
-        to: '/register',
-        icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'Error 404',
-        to: '/404',
-        icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'Error 500',
-        to: '/500',
-        icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
       },
     ],
   },

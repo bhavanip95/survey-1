@@ -16,14 +16,8 @@ import {
   CBadge,
 } from '@coreui/react'
 import React, { useState } from 'react'
-
-const QUESTIONNAIRES = [
-  {
-    title: 'First Questionnaire',
-    id: 1,
-    questionsCount: 10,
-  },
-]
+import { categoryData } from '../../data/data'
+const QUESTIONNAIRES = categoryData
 const Questionnaire = () => {
   const [visible, setVisible] = useState(false)
   const questionnaireClickedHandler = (event) => {
