@@ -326,3 +326,4 @@ unique.forEach((categoryId) => {
 })
 
 export { categoryData }
+export default data

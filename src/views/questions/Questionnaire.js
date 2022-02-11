@@ -16,13 +16,15 @@ import {
   CBadge,
 } from '@coreui/react'
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { categoryData } from '../../data/data'
 const QUESTIONNAIRES = categoryData
 const Questionnaire = () => {
+  const history = useHistory()
   const [visible, setVisible] = useState(false)
   const questionnaireClickedHandler = (event) => {
     event.preventDefault()
-    console.log('questionnaire clicked')
+    history.push('questionnaire/edit')
   }
   return (
     <div>

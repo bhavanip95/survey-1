@@ -1,9 +1,9 @@
 import React from 'react'
+import Question from './views/questions/Question'
 const Questionnaire = React.lazy(() => import('./views/questions/Questionnaire'))
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Users = React.lazy(() => import('./views/users/Users'))
 const CreateUserForm = React.lazy(() => import('./views/users/CreateUserForm'))
-const EditQuestionnaireForm = React.lazy(() => import('./views/questions/EditQuestionnaireForm'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -17,9 +17,9 @@ const routes = [
     exact: true,
   },
   {
-    path: '/questionnaire/id',
-    name: 'Edit Questionnaire',
-    component: EditQuestionnaireForm,
+    path: '/questionnaire/edit',
+    name: 'Edit',
+    component: Question,
   },
 ]
 
