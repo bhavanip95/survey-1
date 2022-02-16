@@ -1,7 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
   CCard,
+  CButton,
+  CModal,
+  CModalHeader,
+  CModalFooter,
+  CModalTitle,
+  CModalBody,
+  CContainer,
+  CRow,
+  CCol,
+  CForm,
+  CFormLabel,
+  CFormTextarea,
+  CFormInput,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -17,6 +30,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilSortAlphaDown } from '@coreui/icons'
 const Users = () => {
+  const [visible, setVisible] = useState(false)
   const tableExample = [
     {
       name: 'Bhavani Patil',
@@ -80,11 +94,66 @@ const Users = () => {
   const sortIcon = <CIcon className="me-2" icon={cilSortAlphaDown} size="sm" />
   return (
     <CCard>
+      <CContainer>
+        <CRow>
+          <CCol xs={8}>
+            <div className="p-3 m-0 border bg-light">
+              <CFormInput
+                id="exampleFormControlInput1"
+                placeholder="Search FullName or CompanyName"
+              />
+            </div>
+          </CCol>
+          <CCol xs={4}>
+            <div className="p-3 border bg-light align-center">
+              <CButton onClick={() => setVisible(!visible)}>Add User</CButton>
+              <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
+                <CModalHeader>
+                  <CModalTitle>Enter the details to add user</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                  <CForm>
+                    <div className="mb-3">
+                      <CFormLabel htmlFor="email">Full name</CFormLabel>
+                      <CFormInput type="text" placeholder="Full Name" />
+                    </div>
+                    <div className="mb-3">
+                      <CFormLabel htmlFor="email">Company name</CFormLabel>
+                      <CFormInput type="text" placeholder="Company name" />
+                    </div>
+                    <div className="mb-3">
+                      <CFormLabel htmlFor="company address">Company address</CFormLabel>
+                      <CFormTextarea id="company address" rows="3"></CFormTextarea>
+                    </div>
+
+                    <div className="mb-3">
+                      <CFormLabel htmlFor="contactno">Contact number</CFormLabel>
+                      <CFormInput type="text" placeholder="Contact number" />
+                    </div>
+
+                    <div className="mb-3">
+                      <CFormLabel htmlFor="email">Email address</CFormLabel>
+                      <CFormInput type="email" id="email" placeholder="name@example.com" />
+                    </div>
+                  </CForm>
+                </CModalBody>
+                <CModalFooter>
+                  <CButton color="secondary" onClick={() => setVisible(false)}>
+                    Close
+                  </CButton>
+                  <CButton color="primary">Save changes</CButton>
+                </CModalFooter>
+              </CModal>
+            </div>
+          </CCol>
+        </CRow>
+      </CContainer>
+
       <CTable align="middle" className="mb-0 border" hover responsive>
         <CTableHead color="light">
           <CTableRow>
             <CTableHeaderCell onClick={sortByNameHandler}>
-              Name
+              Full Name
               {sortIcon}
             </CTableHeaderCell>
             <CTableHeaderCell onClick={sortByCompnayNameHandler}>
@@ -132,3 +201,4 @@ const Users = () => {
   )
 }
 export default Users
+
