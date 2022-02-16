@@ -325,5 +325,12 @@ unique.forEach((categoryId) => {
   categoryData.push({ id: categoryId, title: obj.category_name, questionsCount: items.length })
 })
 
+let dashboardData = []
+dashboardData = unique.forEach((categoryId) => {
+  const obj = data.find((o) => o.category_id === categoryId)
+  dashboardData.push(obj.category_name)
+})
+
 export { categoryData }
+export { dashboardData }
 export default data

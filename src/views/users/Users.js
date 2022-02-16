@@ -29,44 +29,10 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilSortAlphaDown } from '@coreui/icons'
+import axios from 'axios'
 const Users = () => {
   const [visible, setVisible] = useState(false)
   const tableExample = [
-    {
-      name: 'Bhavani Patil',
-      companyName: 'Shriram Solutions',
-      createdDate: 'Jan 1, 2021',
-    },
-    {
-      name: 'Bhavani Patil',
-      companyName: 'Shriram Solutions',
-      createdDate: 'Jan 1, 2021',
-    },
-    {
-      name: 'Bhavani Patil',
-      companyName: 'Shriram Solutions',
-      createdDate: 'Jan 1, 2021',
-    },
-    {
-      name: 'Bhavani Patil',
-      companyName: 'Shriram Solutions',
-      createdDate: 'Jan 1, 2021',
-    },
-    {
-      name: 'Bhavani Patil',
-      companyName: 'Shriram Solutions',
-      createdDate: 'Jan 1, 2021',
-    },
-    {
-      name: 'Bhavani Patil',
-      companyName: 'Shriram Solutions',
-      createdDate: 'Jan 1, 2021',
-    },
-    {
-      name: 'Bhavani Patil',
-      companyName: 'Shriram Solutions',
-      createdDate: 'Jan 1, 2021',
-    },
     {
       name: 'Bhavani Patil',
       companyName: 'Shriram Solutions',
@@ -90,6 +56,28 @@ const Users = () => {
   }
   const sortByCompnayNameHandler = () => {
     console.log('sort by company name handler')
+  }
+  const saveUserHandler = (event) => {
+    event.preventDefault()
+    let payload = {
+      full_name: 'Bhavani Patil',
+      company_name: 'Microsoft',
+      company_addrs: 'Vijayapura',
+      contact: '8908765431',
+      email: 'bhavani@mail.com',
+    }
+    axios({
+      method: 'post',
+      url: 'https://vri.skjewelsonline.com/user_create',
+      data: payload, // you are sending body instead
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    }).then((response) => {
+      console.log(response.data)
+      console.log(response.status)
+    })
   }
   const sortIcon = <CIcon className="me-2" icon={cilSortAlphaDown} size="sm" />
   return (
@@ -141,7 +129,9 @@ const Users = () => {
                   <CButton color="secondary" onClick={() => setVisible(false)}>
                     Close
                   </CButton>
-                  <CButton color="primary">Save changes</CButton>
+                  <CButton color="primary" onClick={saveUserHandler}>
+                    Save changes
+                  </CButton>
                 </CModalFooter>
               </CModal>
             </div>
@@ -201,4 +191,3 @@ const Users = () => {
   )
 }
 export default Users
-

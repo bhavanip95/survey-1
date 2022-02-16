@@ -1,15 +1,25 @@
 // Here you can add other styles
 .sidebar {
-   background-color: white;
+  background-color: white;
 }
+
 .sidebar-brand {
   background-color: white;
 }
 
-.sidebar-nav .nav-group-items .nav-link{
-  color:black;
+.sidebar-nav .nav-group-items .nav-link {
+  color: black;
 }
-.sidebar-nav .nav-group .nav-group-items{
+
+.sidebar-nav .nav-group .nav-group-items {
   background-color: white;
-  color : black;
+  color: black;
+}
+
+.sidebar-nav .nav-group {
+  cursor: pointer;
+}
+
+.sidebar-nav .nav-group {
+  background: var(--cui-sidebar-nav-group-bg, rgba(0, 0, 0, 0.2));
 }
