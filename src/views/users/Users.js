@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import {
   CCard,
@@ -29,16 +29,23 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilSortAlphaDown } from '@coreui/icons'
+import { addUser } from './UsersAPI'
 import axios from 'axios'
 const Users = () => {
   const [visible, setVisible] = useState(false)
-  const tableExample = [
-    {
-      name: 'Bhavani Patil',
-      companyName: 'Shriram Solutions',
-      createdDate: 'Jan 1, 2021',
-    },
-  ]
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: '/user_lists',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      setData(response.data)
+    })
+  }, [])
 
   const editUserHandler = (event) => {
     event.preventDefault()
@@ -66,75 +73,62 @@ const Users = () => {
       contact: '8908765431',
       email: 'bhavani@mail.com',
     }
-    axios({
-      method: 'post',
-      url: 'https://vri.skjewelsonline.com/user_create',
-      data: payload, // you are sending body instead
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-    }).then((response) => {
-      console.log(response.data)
-      console.log(response.status)
-    })
+    let response = addUser(payload)
+    console.log(response.data)
   }
   const sortIcon = <CIcon className="me-2" icon={cilSortAlphaDown} size="sm" />
+  const noData = <span>No Data</span>
   return (
     <CCard>
       <CContainer>
-        <CRow>
+        <CRow className="padding: 5px; margin: 5px;">
           <CCol xs={8}>
-            <div className="p-3 m-0 border bg-light">
-              <CFormInput
-                id="exampleFormControlInput1"
-                placeholder="Search FullName or CompanyName"
-              />
-            </div>
+            <CFormInput
+              id="exampleFormControlInput1"
+              placeholder="Search FullName or CompanyName"
+            />
           </CCol>
           <CCol xs={4}>
-            <div className="p-3 border bg-light align-center">
-              <CButton onClick={() => setVisible(!visible)}>Add User</CButton>
-              <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
-                <CModalHeader>
-                  <CModalTitle>Enter the details to add user</CModalTitle>
-                </CModalHeader>
-                <CModalBody>
-                  <CForm>
-                    <div className="mb-3">
-                      <CFormLabel htmlFor="email">Full name</CFormLabel>
-                      <CFormInput type="text" placeholder="Full Name" />
-                    </div>
-                    <div className="mb-3">
-                      <CFormLabel htmlFor="email">Company name</CFormLabel>
-                      <CFormInput type="text" placeholder="Company name" />
-                    </div>
-                    <div className="mb-3">
-                      <CFormLabel htmlFor="company address">Company address</CFormLabel>
-                      <CFormTextarea id="company address" rows="3"></CFormTextarea>
-                    </div>
+            <CButton onClick={() => setVisible(!visible)}>Add User</CButton>
+            <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
+              <CModalHeader>
+                <CModalTitle>Enter the details to add user</CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                <CForm>
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="email">Full name</CFormLabel>
+                    <CFormInput type="text" placeholder="Full Name" />
+                  </div>
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="email">Company name</CFormLabel>
+                    <CFormInput type="text" placeholder="Company name" />
+                  </div>
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="company address">Company address</CFormLabel>
+                    <CFormTextarea id="company address" rows="3"></CFormTextarea>
+                  </div>
 
-                    <div className="mb-3">
-                      <CFormLabel htmlFor="contactno">Contact number</CFormLabel>
-                      <CFormInput type="text" placeholder="Contact number" />
-                    </div>
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="contactno">Contact number</CFormLabel>
+                    <CFormInput type="text" placeholder="Contact number" />
+                  </div>
 
-                    <div className="mb-3">
-                      <CFormLabel htmlFor="email">Email address</CFormLabel>
-                      <CFormInput type="email" id="email" placeholder="name@example.com" />
-                    </div>
-                  </CForm>
-                </CModalBody>
-                <CModalFooter>
-                  <CButton color="secondary" onClick={() => setVisible(false)}>
-                    Close
-                  </CButton>
-                  <CButton color="primary" onClick={saveUserHandler}>
-                    Save changes
-                  </CButton>
-                </CModalFooter>
-              </CModal>
-            </div>
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="email">Email address</CFormLabel>
+                    <CFormInput type="email" id="email" placeholder="name@example.com" />
+                  </div>
+                </CForm>
+              </CModalBody>
+              <CModalFooter>
+                <CButton color="secondary" onClick={() => setVisible(false)}>
+                  Close
+                </CButton>
+                <CButton color="primary" onClick={saveUserHandler}>
+                  Save changes
+                </CButton>
+              </CModalFooter>
+            </CModal>
           </CCol>
         </CRow>
       </CContainer>
@@ -158,16 +152,16 @@ const Users = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {tableExample.map((item, index) => (
+          {data.map((item, index) => (
             <CTableRow v-for="item in tableItems" key={index}>
               <CTableDataCell>
-                <div>{item.name}</div>
+                <div>{item.user_full_name}</div>
               </CTableDataCell>
               <CTableDataCell>
-                <div>{item.companyName}</div>
+                <div>{item.company_name}</div>
               </CTableDataCell>
               <CTableDataCell>
-                <div>{item.createdDate}</div>
+                <div>{item.createdDate && noData}</div>
               </CTableDataCell>
               <CTableDataCell>
                 <CDropdown variant="btn-group">
