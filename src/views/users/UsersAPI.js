@@ -8,9 +8,8 @@ const addUser = async (userData) => {
       'Content-Type': 'application/json',
     },
   })
-  const json = await response.json()
-  console.log(json)
-  return json
+  const data = await response.json()
+  return data
 }
 const listUsers = async () => {
   const response = await axios({

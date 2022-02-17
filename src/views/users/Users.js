@@ -3,17 +3,8 @@ import React, { useState, useEffect } from 'react'
 import {
   CCard,
   CButton,
-  CModal,
-  CModalHeader,
-  CModalFooter,
-  CModalTitle,
-  CModalBody,
-  CContainer,
   CRow,
   CCol,
-  CForm,
-  CFormLabel,
-  CFormTextarea,
   CFormInput,
   CTable,
   CTableBody,
@@ -29,12 +20,12 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilSortAlphaDown } from '@coreui/icons'
-import { addUser } from './UsersAPI'
 import axios from 'axios'
+import UserForm from './UserForm'
 const Users = () => {
   const [visible, setVisible] = useState(false)
   const [data, setData] = useState([])
-
+  const [mode, setMode] = useState('create')
   useEffect(() => {
     axios({
       method: 'get',
@@ -49,7 +40,8 @@ const Users = () => {
 
   const editUserHandler = (event) => {
     event.preventDefault()
-    console.log('editing user')
+    setMode('edit')
+    setVisible(true)
   }
   const deleteUserHandler = (event) => {
     event.preventDefault()
@@ -64,74 +56,48 @@ const Users = () => {
   const sortByCompnayNameHandler = () => {
     console.log('sort by company name handler')
   }
-  const saveUserHandler = (event) => {
-    event.preventDefault()
-    let payload = {
-      full_name: 'Bhavani Patil',
-      company_name: 'Microsoft',
-      company_addrs: 'Vijayapura',
-      contact: '8908765431',
-      email: 'bhavani@mail.com',
-    }
-    let response = addUser(payload)
-    console.log(response.data)
+  const saveUserHandler = (payload) => {
+    axios({
+      method: 'post',
+      url: '/user_create',
+      data: payload, // you are sending body instead
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          setVisible(false)
+          alert('user created!')
+        }
+      })
+      .catch((error) => {
+        setVisible(false)
+        alert('error adding user')
+      })
   }
+
   const sortIcon = <CIcon className="me-2" icon={cilSortAlphaDown} size="sm" />
   const noData = <span>No Data</span>
+
   return (
     <CCard>
-      <CContainer>
-        <CRow className="padding: 5px; margin: 5px;">
-          <CCol xs={8}>
-            <CFormInput
-              id="exampleFormControlInput1"
-              placeholder="Search FullName or CompanyName"
-            />
-          </CCol>
-          <CCol xs={4}>
-            <CButton onClick={() => setVisible(!visible)}>Add User</CButton>
-            <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
-              <CModalHeader>
-                <CModalTitle>Enter the details to add user</CModalTitle>
-              </CModalHeader>
-              <CModalBody>
-                <CForm>
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="email">Full name</CFormLabel>
-                    <CFormInput type="text" placeholder="Full Name" />
-                  </div>
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="email">Company name</CFormLabel>
-                    <CFormInput type="text" placeholder="Company name" />
-                  </div>
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="company address">Company address</CFormLabel>
-                    <CFormTextarea id="company address" rows="3"></CFormTextarea>
-                  </div>
-
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="contactno">Contact number</CFormLabel>
-                    <CFormInput type="text" placeholder="Contact number" />
-                  </div>
-
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="email">Email address</CFormLabel>
-                    <CFormInput type="email" id="email" placeholder="name@example.com" />
-                  </div>
-                </CForm>
-              </CModalBody>
-              <CModalFooter>
-                <CButton color="secondary" onClick={() => setVisible(false)}>
-                  Close
-                </CButton>
-                <CButton color="primary" onClick={saveUserHandler}>
-                  Save changes
-                </CButton>
-              </CModalFooter>
-            </CModal>
-          </CCol>
-        </CRow>
-      </CContainer>
+      <UserForm
+        onClose={() => {
+          setVisible(false)
+        }}
+        visible={visible}
+        onDone={saveUserHandler}
+        mode={mode}
+      />
+      <CRow className="padding: 5px; margin: 5px;">
+        <CCol xs={8}>
+          <CFormInput id="exampleFormControlInput1" placeholder="Search FullName or CompanyName" />
+        </CCol>
+        <CCol xs={4}>
+          <CButton onClick={() => setVisible(!visible)}>Add User</CButton>
+        </CCol>
+      </CRow>
 
       <CTable align="middle" className="mb-0 border" hover responsive>
         <CTableHead color="light">
