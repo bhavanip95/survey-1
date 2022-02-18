@@ -23,9 +23,18 @@ import { cilSortAlphaDown } from '@coreui/icons'
 import axios from 'axios'
 import UserForm from './UserForm'
 const Users = () => {
+  let initialState = {
+    full_name: '',
+    company_name: '',
+    company_addrs: '',
+    contact: '',
+    email: '',
+  }
+
   const [visible, setVisible] = useState(false)
   const [data, setData] = useState([])
-  const [mode, setMode] = useState('create')
+  const [editMode, setEditMode] = useState(false)
+  const [formData, setFormData] = useState(initialState)
   useEffect(() => {
     axios({
       method: 'get',
@@ -38,9 +47,27 @@ const Users = () => {
     })
   }, [])
 
-  const editUserHandler = (event) => {
-    event.preventDefault()
-    setMode('edit')
+  const editUserHandler = (id) => {
+    console.log(id)
+    // axios({
+    //   method: 'get',
+    //   url: '/user_lists',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // }).then((response) => {
+    //   setData(response.data)
+    // })
+    let newState = {
+      user_id: id,
+      full_name: 'New Full Name',
+      company_name: 'New Company Name',
+      company_addrs: 'New Company Address',
+      contact: '2222',
+      email: 'test@test.com',
+    }
+    setFormData((prevData) => ({ ...prevData, ...newState }))
+    setEditMode(true)
     setVisible(true)
   }
   const deleteUserHandler = (event) => {
@@ -77,6 +104,31 @@ const Users = () => {
       })
   }
 
+  const updateUserHandler = (payload) => {
+    console.log('updating user Id ' + payload.user_id)
+    axios({
+      method: 'post',
+      url: '/user_update',
+      data: payload, // you are sending body instead
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          setVisible(false)
+          alert('user updated!')
+        }
+      })
+      .catch((error) => {
+        setVisible(false)
+        alert('error updating user')
+      })
+  }
+  const addUserHandler = () => {
+    setVisible(!visible)
+    setEditMode(false)
+  }
   const sortIcon = <CIcon className="me-2" icon={cilSortAlphaDown} size="sm" />
   const noData = <span>No Data</span>
 
@@ -88,14 +140,16 @@ const Users = () => {
         }}
         visible={visible}
         onDone={saveUserHandler}
-        mode={mode}
+        onUpdate={updateUserHandler}
+        editMode={editMode}
+        data={formData}
       />
       <CRow className="padding: 5px; margin: 5px;">
         <CCol xs={8}>
           <CFormInput id="exampleFormControlInput1" placeholder="Search FullName or CompanyName" />
         </CCol>
         <CCol xs={4}>
-          <CButton onClick={() => setVisible(!visible)}>Add User</CButton>
+          <CButton onClick={addUserHandler}>Add User</CButton>
         </CCol>
       </CRow>
 
@@ -118,8 +172,8 @@ const Users = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {data.map((item, index) => (
-            <CTableRow v-for="item in tableItems" key={index}>
+          {data.map((item) => (
+            <CTableRow v-for="item in tableItems" key={item.user_id}>
               <CTableDataCell>
                 <div>{item.user_full_name}</div>
               </CTableDataCell>
@@ -133,13 +187,11 @@ const Users = () => {
                 <CDropdown variant="btn-group">
                   <CDropdownToggle color="primary">Action</CDropdownToggle>
                   <CDropdownMenu>
-                    <CDropdownItem href="#" onClick={editUserHandler}>
+                    <CDropdownItem onClick={() => editUserHandler(item.user_id)}>
                       Edit
                     </CDropdownItem>
                     <CDropdownDivider />
-                    <CDropdownItem href="#" onClick={deleteUserHandler}>
-                      Delete
-                    </CDropdownItem>
+                    <CDropdownItem onClick={deleteUserHandler}>Delete</CDropdownItem>
                   </CDropdownMenu>
                 </CDropdown>
               </CTableDataCell>
