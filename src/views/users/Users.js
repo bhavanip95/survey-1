@@ -58,21 +58,28 @@ const Users = () => {
     // }).then((response) => {
     //   setData(response.data)
     // })
-    let newState = {
-      user_id: id,
-      full_name: 'New Full Name',
-      company_name: 'New Company Name',
-      company_addrs: 'New Company Address',
-      contact: '2222',
-      email: 'test@test.com',
-    }
-    setFormData((prevData) => ({ ...prevData, ...newState }))
+    let existingData = data.filter((elem) => {
+      return elem.user_id === id
+    })
+    let editData = existingData[0]
+    setFormData((prevData) => ({ ...prevData, ...editData }))
     setEditMode(true)
     setVisible(true)
   }
-  const deleteUserHandler = (event) => {
-    event.preventDefault()
-    console.log('deleting user')
+  const deleteUserHandler = (id) => {
+    console.log('deleting user' + id)
+    axios({
+      method: 'post',
+      url: '/user_delete',
+      data: {
+        user_id: id,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      alert('user deleted!!')
+    })
   }
   const sortByNameHandler = () => {
     console.log('sort by name handler')
@@ -181,7 +188,7 @@ const Users = () => {
                 <div>{item.company_name}</div>
               </CTableDataCell>
               <CTableDataCell>
-                <div>{item.createdDate && noData}</div>
+                <div>{item.company_created_date && noData}</div>
               </CTableDataCell>
               <CTableDataCell>
                 <CDropdown variant="btn-group">
@@ -191,7 +198,9 @@ const Users = () => {
                       Edit
                     </CDropdownItem>
                     <CDropdownDivider />
-                    <CDropdownItem onClick={deleteUserHandler}>Delete</CDropdownItem>
+                    <CDropdownItem onClick={() => deleteUserHandler(item.user_id)}>
+                      Delete
+                    </CDropdownItem>
                   </CDropdownMenu>
                 </CDropdown>
               </CTableDataCell>

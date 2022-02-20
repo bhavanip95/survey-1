@@ -22,7 +22,7 @@ const UserForm = (props) => {
 
   useEffect(() => {
     let newData = props.data
-    setFullName(newData.full_name)
+    setFullName(newData.user_full_name)
     setCompanyName(newData.company_name)
     setCompanyAddress(newData.company_addrs)
     setContactNumber(newData.contact)
@@ -30,7 +30,7 @@ const UserForm = (props) => {
   }, [props.data])
   const saveHandler = () => {
     let payload = {
-      full_name: fullName,
+      user_full_name: fullName,
       company_name: companyName,
       company_addrs: companyAddress,
       contact: contactNumber,
