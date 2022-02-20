@@ -15,16 +15,84 @@ import {
   CFormInput,
   CBadge,
 } from '@coreui/react'
-import React, { useState } from 'react'
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { categoryData } from '../../data/data'
-const QUESTIONNAIRES = categoryData
+import CIcon from '@coreui/icons-react'
+import { cilX, cilArrowRight, cilPencil } from '@coreui/icons'
+
 const Questionnaire = () => {
+  const [title, setTitle] = useState('')
+  const [categories, setCategories] = useState([])
+  useEffect(() => {
+    listCategories()
+  }, [])
+
+  const listCategories = () => {
+    axios({
+      method: 'get',
+      url: '/category_list',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      setCategories(response.data)
+    })
+  }
+  const saveCategoryHandler = () => {
+    console.log('saving category')
+    const payload = {
+      question_category: title,
+    }
+    axios({
+      method: 'post',
+      url: '/category_add',
+      data: payload, // you are sending body instead
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          setVisible(false)
+          alert('Category created!')
+          listCategories()
+        }
+      })
+      .catch((error) => {
+        setVisible(false)
+        alert('error adding category')
+      })
+  }
   const history = useHistory()
   const [visible, setVisible] = useState(false)
-  const questionnaireClickedHandler = (event) => {
-    event.preventDefault()
-    history.push('questionnaire/edit')
+  const questionnaireClickedHandler = (categoryId) => {
+    history.push('questionnaire/edit/' + categoryId)
+  }
+  const deleteCategoryHandler = (categoryId) => {
+    console.log(categoryId)
+    let payload = {
+      category_id: categoryId,
+    }
+    axios({
+      method: 'post',
+      url: '/category_delete',
+      data: payload, // you are sending body instead
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          setVisible(false)
+          alert('Category deleted!')
+          listCategories()
+        }
+      })
+      .catch((error) => {
+        setVisible(false)
+        alert('error deleting category')
+      })
   }
   return (
     <div>
@@ -38,31 +106,55 @@ const Questionnaire = () => {
             <CModalBody mode="create">
               <CForm>
                 <CFormLabel>Questionnaire Title</CFormLabel>
-                <CFormInput></CFormInput>
+                <CFormInput
+                  type="text"
+                  id="title"
+                  placeholder="Category Title"
+                  value={title}
+                  onChange={(event) => setTitle(event.target.value)}
+                ></CFormInput>
               </CForm>
             </CModalBody>
             <CModalFooter>
               <CButton color="secondary" onClick={() => setVisible(false)}>
                 Close
               </CButton>
-              <CButton color="primary">Add</CButton>
+              <CButton color="primary" onClick={saveCategoryHandler}>
+                Add
+              </CButton>
             </CModalFooter>
           </CModal>
         </CCardHeader>
         <CCardBody>
           <CListGroup>
-            {QUESTIONNAIRES.map((questionnaire) => {
+            {categories.map((item) => {
               return (
                 <CListGroupItem
-                  onClick={questionnaireClickedHandler}
                   className="d-flex justify-content-between align-items-center"
-                  key={questionnaire.id}
+                  key={item.question_bank_id}
                   component="a"
                 >
-                  {questionnaire.title}
-                  <CBadge color="primary" shape="rounded-pill">
-                    {questionnaire.questionsCount}
-                  </CBadge>
+                  {item.question_bank_title}
+                  <div>
+                    <CBadge color="primary" shape="rounded-pill">
+                      NA
+                    </CBadge>
+                    <span> </span>
+                    <CIcon
+                      icon={cilX}
+                      size="lg"
+                      onClick={() => {
+                        deleteCategoryHandler(item.question_bank_id)
+                      }}
+                    />
+                    <CIcon
+                      icon={cilPencil}
+                      size="lg"
+                      onClick={() => {
+                        questionnaireClickedHandler(item.question_bank_id)
+                      }}
+                    />
+                  </div>
                 </CListGroupItem>
               )
             })}

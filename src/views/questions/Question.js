@@ -17,20 +17,50 @@ import {
   CModalFooter,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import React, { useState } from 'react'
-import data from '../../data/data'
+import React, { useState, useEffect } from 'react'
+
 import { cilMove, cilX } from '@coreui/icons'
+import axios from 'axios'
 
 const Question = (props) => {
   const [visible, setVisible] = useState(false)
-  const categoryId = 1
-  const questions = data.filter((obj) => obj.category_id === categoryId)
-  const addQuestionHandler = (event) => {
-    event.preventDefault()
+  const [question, setQuestion] = useState('')
+  const [questions, setQuestions] = useState([])
+  // const categoryId = 1
+  // const questions = data.filter((obj) => obj.category_id === categoryId)
+  const addQuestionHandler = () => {
     console.log('adding question')
+    const payload = {
+      question_name: question,
+    }
+    axios({
+      method: 'post',
+      url: '/question_add',
+      data: payload, // you are sending body instead
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          setVisible(false)
+          alert('Question created!')
+          listQuestions()
+        }
+      })
+      .catch((error) => {
+        setVisible(false)
+        alert('error adding category')
+      })
+
     // take data from modal
     //add new object to questions
   }
+
+  useEffect(() => {
+    console.log('listing questions')
+    listQuestions()
+  }, [])
   let dragged
   let id
   let index
@@ -68,7 +98,17 @@ const Question = (props) => {
       }
     }
   }
-  let i = 0
+  const listQuestions = () => {
+    axios({
+      method: 'post',
+      url: '/question_list',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      setQuestions(response.data)
+    })
+  }
   return (
     <CCard>
       <CCardHeader>
@@ -80,7 +120,13 @@ const Question = (props) => {
           <CModalBody mode="create">
             <CForm>
               <CFormLabel>Question</CFormLabel>
-              <CFormInput></CFormInput>
+              <CFormInput
+                type="text"
+                id="title"
+                placeholder="Category Title"
+                value={question}
+                onChange={(event) => setQuestion(event.target.value)}
+              ></CFormInput>
             </CForm>
           </CModalBody>
           <CModalFooter>
@@ -95,12 +141,12 @@ const Question = (props) => {
       </CCardHeader>
       <CCardBody>
         <CListGroup>
-          {questions.map((question) => {
+          {questions.map((item) => {
             return (
               <CListGroupItem
-                key={question.serial_number}
+                key={item.question_master_id}
                 className="d-flex justify-content-between align-items-center dropzone"
-                id={i++}
+                id={item.question_master_id}
                 draggable="true"
                 onDragStart={dragStartHandler}
                 onDragOver={dragOverHandler}
@@ -112,7 +158,7 @@ const Question = (props) => {
                 <CFormTextarea
                   readOnly={true}
                   onClick={(event) => (event.target.readOnly = false)}
-                  defaultValue={question.question}
+                  defaultValue={item.question_name}
                 ></CFormTextarea>
                 <span> </span>
                 <CIcon icon={cilX} size="lg" />

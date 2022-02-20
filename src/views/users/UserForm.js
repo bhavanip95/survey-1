@@ -29,9 +29,9 @@ const UserForm = (props) => {
     setFullName(newData.user_full_name)
     setCompanyName(newData.company_name)
     setCompanyAddress(newData.company_addrs)
-
-    setContactNumber(newData.contact)
-    setEmail(newData.email)
+    setContactNumber(newData.user_phone_number)
+    setCompanyAddress(newData.company_address)
+    setEmail(newData.user_email)
   }, [props.data])
   const saveHandler = () => {
     validateForm()

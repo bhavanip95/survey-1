@@ -36,6 +36,10 @@ const Users = () => {
   const [editMode, setEditMode] = useState(false)
   const [formData, setFormData] = useState(initialState)
   useEffect(() => {
+    listUsers()
+  }, [])
+
+  const listUsers = () => {
     axios({
       method: 'get',
       url: '/user_lists',
@@ -45,24 +49,30 @@ const Users = () => {
     }).then((response) => {
       setData(response.data)
     })
-  }, [])
-
+  }
   const editUserHandler = (id) => {
     console.log(id)
-    // axios({
-    //   method: 'get',
-    //   url: '/user_lists',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // }).then((response) => {
-    //   setData(response.data)
-    // })
-    let existingData = data.filter((elem) => {
-      return elem.user_id === id
+    axios({
+      method: 'post',
+      url: '/user_edit',
+      data: {
+        user_id: id,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      console.log(response.data[0])
+      let userData = response.data[0]
+      setFormData((prev) => {
+        return { ...prev, ...userData }
+      })
     })
-    let editData = existingData[0]
-    setFormData((prevData) => ({ ...prevData, ...editData }))
+    // let existingData = data.filter((elem) => {
+    //   return elem.user_id === id
+    // })
+    // let editData = existingData[0]
+    // setFormData((prevData) => ({ ...prevData, ...editData }))
     setEditMode(true)
     setVisible(true)
   }
@@ -79,6 +89,7 @@ const Users = () => {
       },
     }).then((response) => {
       alert('user deleted!!')
+      listUsers()
     })
   }
   const sortByNameHandler = () => {
@@ -103,6 +114,7 @@ const Users = () => {
         if (response.status === 201) {
           setVisible(false)
           alert('user created!')
+          listUsers()
         }
       })
       .catch((error) => {
@@ -125,6 +137,7 @@ const Users = () => {
         if (response.status === 201) {
           setVisible(false)
           alert('user updated!')
+          listUsers()
         }
       })
       .catch((error) => {
