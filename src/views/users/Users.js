@@ -203,7 +203,7 @@ const Users = () => {
               </CTableDataCell>
               <CTableDataCell>
                 <CDropdown variant="btn-group">
-                  <CDropdownToggle color="primary">Action</CDropdownToggle>
+                  <CDropdownToggle color="info">Action</CDropdownToggle>
                   <CDropdownMenu>
                     <CDropdownItem onClick={() => editUserHandler(item.user_id)}>
                       Edit
