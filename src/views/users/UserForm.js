@@ -15,20 +15,27 @@ import {
 
 const UserForm = (props) => {
   const [fullName, setFullName] = useState('')
+  const [validfullName, validsetFullName] = useState('true')
   const [companyName, setCompanyName] = useState('')
+  const [validcompanyName, validsetCompanyName] = useState('true')
   const [companyAddress, setCompanyAddress] = useState('')
   const [contactNumber, setContactNumber] = useState('')
   const [email, setEmail] = useState('')
+  const [validemail, validsetEmail] = useState('true')
 
   useEffect(() => {
     let newData = props.data
     setFullName(newData.user_full_name)
     setCompanyName(newData.company_name)
     setCompanyAddress(newData.company_addrs)
+
     setContactNumber(newData.contact)
     setEmail(newData.email)
   }, [props.data])
   const saveHandler = () => {
+    validateForm()
+    console.log(validfullName)
+    if (validfullName && validcompanyName && validemail) return
     let payload = {
       user_full_name: fullName,
       company_name: companyName,
@@ -39,6 +46,22 @@ const UserForm = (props) => {
     payload = { ...props.data, ...payload }
     if (props.editMode) props.onUpdate(payload)
     else props.onDone(payload)
+  }
+  const validateForm = () => {
+    //event.preventDefault()
+
+    if (fullName.trim() === '') {
+      validsetFullName(false)
+      return
+    }
+    if (companyName.trim() === '') {
+      validsetCompanyName(false)
+      return
+    }
+    if (email.trim() === '') {
+      validsetEmail(false)
+      return
+    }
   }
   return (
     <CModal alignment="center" visible={props.visible} onClose={props.onClose}>
@@ -55,6 +78,7 @@ const UserForm = (props) => {
               value={fullName}
               onChange={(event) => setFullName(event.target.value)}
             />
+            {!validfullName && <p>Full name should not be empty</p>}
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="companyName">Company name</CFormLabel>
@@ -64,6 +88,7 @@ const UserForm = (props) => {
               value={companyName}
               onChange={(event) => setCompanyName(event.target.value)}
             />
+            {!validcompanyName && <p>Company name should not be empty</p>}
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="companyAddress">Company address</CFormLabel>
@@ -94,6 +119,7 @@ const UserForm = (props) => {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
+            {!validemail && <p>Email id should not be empty</p>}
           </div>
         </CForm>
       </CModalBody>
