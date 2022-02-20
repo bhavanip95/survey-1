@@ -144,11 +144,11 @@ const Users = () => {
         editMode={editMode}
         data={formData}
       />
-      <CRow className="padding: 5px; margin: 5px;">
+      <CRow className="p-3 m-0 border bg-light">
         <CCol xs={8}>
           <CFormInput id="exampleFormControlInput1" placeholder="Search FullName or CompanyName" />
         </CCol>
-        <CCol xs={4}>
+        <CCol xs={4} text-center>
           <CButton onClick={addUserHandler}>Add User</CButton>
         </CCol>
       </CRow>
