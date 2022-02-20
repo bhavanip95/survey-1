@@ -12,6 +12,7 @@ import {
   CFormTextarea,
   CFormInput,
 } from '@coreui/react'
+import classes from './UserForm.module.css'
 
 const UserForm = (props) => {
   const [fullName, setFullName] = useState('')
@@ -78,7 +79,7 @@ const UserForm = (props) => {
               value={fullName}
               onChange={(event) => setFullName(event.target.value)}
             />
-            {!validfullName && <p>Full name should not be empty</p>}
+            {!validfullName && <p className={classes.error}>Full name should not be empty</p>}
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="companyName">Company name</CFormLabel>
@@ -88,7 +89,7 @@ const UserForm = (props) => {
               value={companyName}
               onChange={(event) => setCompanyName(event.target.value)}
             />
-            {!validcompanyName && <p>Company name should not be empty</p>}
+            {!validcompanyName && <p className={classes.error}>Company name should not be empty</p>}
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="companyAddress">Company address</CFormLabel>
@@ -119,7 +120,7 @@ const UserForm = (props) => {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
-            {!validemail && <p>Email id should not be empty</p>}
+            {!validemail && <p className={classes.error}>Email id should not be empty</p>}
           </div>
         </CForm>
       </CModalBody>
@@ -127,7 +128,7 @@ const UserForm = (props) => {
         <CButton color="secondary" onClick={props.onClose}>
           Close
         </CButton>
-        <CButton color="primary" onClick={saveHandler}>
+        <CButton color="info" onClick={saveHandler}>
           {props.editMode ? 'Update' : 'Save'}
         </CButton>
       </CModalFooter>

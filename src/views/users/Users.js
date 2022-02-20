@@ -137,8 +137,6 @@ const Users = () => {
     setEditMode(false)
   }
   const sortIcon = <CIcon className="me-2" icon={cilSortAlphaDown} size="sm" />
-  const noData = <span>No Data</span>
-
   return (
     <CCard>
       <UserForm
@@ -188,7 +186,7 @@ const Users = () => {
                 <div>{item.company_name}</div>
               </CTableDataCell>
               <CTableDataCell>
-                <div>{item.company_created_date && noData}</div>
+                <div>{item.company_created_date}</div>
               </CTableDataCell>
               <CTableDataCell>
                 <CDropdown variant="btn-group">
