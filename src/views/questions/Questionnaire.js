@@ -14,12 +14,13 @@ import {
   CFormLabel,
   CFormInput,
   CBadge,
+  CButtonGroup,
 } from '@coreui/react'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
-import { cilX, cilArrowRight, cilPencil } from '@coreui/icons'
+import { cilX, cilPencil } from '@coreui/icons'
 
 const Questionnaire = () => {
   const [title, setTitle] = useState('')
@@ -140,20 +141,26 @@ const Questionnaire = () => {
                       NA
                     </CBadge>
                     <span> </span>
-                    <CIcon
-                      icon={cilX}
-                      size="lg"
-                      onClick={() => {
-                        deleteCategoryHandler(item.question_bank_id)
-                      }}
-                    />
-                    <CIcon
-                      icon={cilPencil}
-                      size="lg"
-                      onClick={() => {
-                        questionnaireClickedHandler(item.question_bank_id)
-                      }}
-                    />
+                    <CButtonGroup role="group" aria-label="Basic example">
+                      <CButton color="secondary">
+                        <CIcon
+                          icon={cilX}
+                          size="lg"
+                          onClick={() => {
+                            deleteCategoryHandler(item.question_bank_id)
+                          }}
+                        />
+                      </CButton>
+                      <CButton color="dark">
+                        <CIcon
+                          icon={cilPencil}
+                          size="lg"
+                          onClick={() => {
+                            questionnaireClickedHandler(item.question_bank_id)
+                          }}
+                        />
+                      </CButton>
+                    </CButtonGroup>
                   </div>
                 </CListGroupItem>
               )

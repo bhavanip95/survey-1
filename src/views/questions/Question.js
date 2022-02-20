@@ -21,6 +21,7 @@ import React, { useState, useEffect } from 'react'
 
 import { cilMove, cilX } from '@coreui/icons'
 import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
 const Question = (props) => {
   const [visible, setVisible] = useState(false)
@@ -28,6 +29,8 @@ const Question = (props) => {
   const [questions, setQuestions] = useState([])
   // const categoryId = 1
   // const questions = data.filter((obj) => obj.category_id === categoryId)
+  const { categoryId } = useParams()
+  console.log(categoryId)
   const addQuestionHandler = () => {
     console.log('adding question')
     const payload = {

@@ -15,7 +15,7 @@ const routes = [
     exact: true,
   },
   {
-    path: '/questionnaire/edit',
+    path: '/questionnaire/edit/:categoryId',
     name: 'Edit',
     component: Question,
   },
