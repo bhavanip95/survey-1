@@ -27,6 +27,12 @@ const _nav = [
         to: '/questionnaire',
         icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
       },
+      {
+        component: CNavItem,
+        name: 'Create Survey Form',
+        to: '/SurveyForm',
+        icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
+      },
     ],
   },
 ]
