@@ -34,16 +34,17 @@ const UserForm = (props) => {
     setEmail(newData.user_email)
   }, [props.data])
   const saveHandler = () => {
-    validateForm()
-    console.log(validfullName)
-    if (validfullName && validcompanyName && validemail) return
+    // validateForm()
+    // console.log(validfullName)
+    // if (validfullName && validcompanyName && validemail) return
     let payload = {
-      user_full_name: fullName,
+      full_name: fullName,
       company_name: companyName,
       company_addrs: companyAddress,
       contact: contactNumber,
-      email: email,
+      email_id: email,
     }
+    console.log(payload)
     payload = { ...props.data, ...payload }
     if (props.editMode) props.onUpdate(payload)
     else props.onDone(payload)
