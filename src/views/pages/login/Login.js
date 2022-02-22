@@ -20,6 +20,7 @@ import axios from 'axios'
 const Login = () => {
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
+  const [isError, setIsError] = useState(false)
   const history = useHistory()
   const loginHandler = () => {
     const payload = {
@@ -40,6 +41,7 @@ const Login = () => {
           history.push('/dashboard')
         } else {
           console.log('login failure')
+          setIsError(true)
         }
       })
       .catch((error) => {
@@ -84,6 +86,7 @@ const Login = () => {
                         }}
                       />
                     </CInputGroup>
+                    {isError && <p style={{ color: 'red' }}>Username or password is wrong</p>}
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" onClick={loginHandler}>
