@@ -61,6 +61,7 @@ const SurveyForm = () => {
               ))}
             </CFormSelect>
           </div>
+
           <CInputGroup className="mb-3">
             <CInputGroupText>
               <CFormCheck type="checkbox" value="" aria-label="Checkbox for following text input" />
