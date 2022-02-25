@@ -22,16 +22,24 @@ const _nav = [
         icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
       },
       {
-        component: CNavItem,
-        name: 'Survey Management',
-        to: '/questionnaire',
-        icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'Create Survey Form',
-        to: '/SurveyForm',
-        icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
+        component: CNavGroup,
+        name: 'Survey Managemnt',
+
+        items: [
+          {
+            component: CNavItem,
+            name: 'Questions category',
+            to: '/questionnaire',
+            icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
+          },
+          {
+            component: CNavItem,
+            name: 'Survey List',
+            to: '/SurveyForm',
+
+            icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
+          },
+        ],
       },
     ],
   },

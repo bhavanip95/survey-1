@@ -61,7 +61,7 @@ const Question = (props) => {
   }
 
   useEffect(() => {
-    console.log('listing questions')
+    console.log('listing questions(Question Component)')
     listQuestions()
   }, [])
   let dragged
@@ -102,15 +102,24 @@ const Question = (props) => {
     }
   }
   const listQuestions = () => {
+    console.log(categoryId)
     axios({
       method: 'post',
-      url: '/question_list',
+      url: '/questions_load',
+      data: {
+        category_id: categoryId,
+      },
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((response) => {
-      setQuestions(response.data)
     })
+      .then((response) => {
+        setQuestions(response.data) //just iterrate this one ok
+      })
+      .catch((error) => {
+        setVisible(false)
+        alert('error fetching data')
+      })
   }
   return (
     <CCard>

@@ -69,6 +69,24 @@ const Questionnaire = () => {
   const [visible, setVisible] = useState(false)
   const questionnaireClickedHandler = (categoryId) => {
     history.push('questionnaire/edit/' + categoryId)
+    /*console.log(categoryId)
+    axios({
+      method: 'post',
+      url: '/questions_load',
+      data: {
+        category_id: categoryId,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log(response.data) //just iterrate this one ok
+      })
+      .catch((error) => {
+        setVisible(false)
+        alert('error fetching data')
+      })*/
   }
   const deleteCategoryHandler = (categoryId) => {
     console.log(categoryId)
