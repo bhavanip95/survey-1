@@ -4,6 +4,7 @@ import AllQuestions from './AllQuestions'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { CRow, CCol } from '@coreui/react'
+import { useParams } from 'react-router-dom'
 
 import {
   CCard,
@@ -16,7 +17,7 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 
-const SurveyForm = () => {
+const SurveyEdit = () => {
   const [surveyName, setSurveyName] = useState()
   const [companyList, setCompanyList] = useState([])
   const [companyName, setCompanyName] = useState('')
@@ -24,7 +25,7 @@ const SurveyForm = () => {
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [data, setData] = useState([])
-
+  const { surveyId } = useParams()
   const listQuestions = () => {
     axios({
       method: 'get',
@@ -53,16 +54,38 @@ const SurveyForm = () => {
       return newData
     })
   }
+
   useEffect(function () {
+    let payload = { survey_id: surveyId }
     axios({
-      method: 'get',
-      url: '/company_lists',
+      method: 'post',
+      url: '/survey_edit',
+      data: payload,
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((response) => setCompanyList(response.data))
+    }).then((response) => {
+      console.log(response.data[0])
+      let surveyData = response.data[0]
+      //       company_name: "shriram Solutions"
+      // questions_name: "Do you track gross profit by customer/project and by product/service?|Do you track revenue/sales per person per month?|Does your management team know what revenue/sales you need to achieve each month to breakeven?|Is your biggest customer less than 25% of your sales/revenue?|Have you distributed an organisational chart to your staff?|Have you distributed position descriptions to your supervisors/managers?|Do you maintain a rolling 13 week cash flow forecast?|Do you know how long your working capital cycle is in days?"
+      // survey_company_id: "1"
+      // survey_end_date: "2022-03-01 00:00:00"
+      // survey_id: "1"
+      // survey_start_date: "2022-02-25 09:26:52"
+      // survey_title: "Perforance"
+      setSurveyName(surveyData.survey_title)
 
-    listQuestions()
+      let surveyQuestions = surveyData.questions_name.split('|')
+      console.log(surveyQuestions)
+      let allQuestions = surveyQuestions.map((item, index) => {
+        return { question_master_id: index, question_name: item }
+      })
+      console.log(allQuestions)
+      setQuestions(allQuestions)
+      //   setStartDate(surveyData.survey_start_date)
+      //   setEndDate(surveyData.survey_end_date)
+    })
   }, [])
 
   const saveSurveyHandler = (event) => {
@@ -162,4 +185,4 @@ const SurveyForm = () => {
     </CCard>
   )
 }
-export default SurveyForm
+export default SurveyEdit
