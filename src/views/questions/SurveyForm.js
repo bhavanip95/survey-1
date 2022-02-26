@@ -4,6 +4,7 @@ import AllQuestions from './AllQuestions'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { CRow, CCol } from '@coreui/react'
+import { useHistory } from 'react-router-dom'
 
 import {
   CCard,
@@ -24,6 +25,7 @@ const SurveyForm = () => {
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [data, setData] = useState([])
+  const history = useHistory()
 
   const listQuestions = () => {
     axios({
@@ -90,7 +92,12 @@ const SurveyForm = () => {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => console.log(response))
+      .then((response) => {
+        if (response.status === 201) {
+          alert('Category created!')
+        }
+      })
+
       .catch((error) => {
         alert('error adding survey form')
       })
@@ -111,8 +118,9 @@ const SurveyForm = () => {
             />
           </div>
           <div className="mb-3">
-            <CFormLabel htmlFor="Company List">Select Company from the Options</CFormLabel>
+            <CFormLabel htmlFor="Company List">Company Name</CFormLabel>
             <CFormSelect onChange={(event) => setCompanyName(event.target.value)}>
+              <option>Select Company name from the options</option>
               {companyList.map((company) => (
                 <option key={company.user_id} value={company.user_id}>
                   {company.company_name}
@@ -156,6 +164,9 @@ const SurveyForm = () => {
             <CButton color="primary" onClick={saveSurveyHandler}>
               Submit
             </CButton>
+            <CCol xs={4} text-center>
+              <CButton onClick={() => history.push('/SurveyList')}>Go back</CButton>
+            </CCol>
           </div>
         </CForm>
       </CCardBody>

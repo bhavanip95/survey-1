@@ -33,8 +33,27 @@ const SurveyList = () => {
   }
 
   const deleteSurveyHandler = (id) => {
-    console.log('deleting')
+    console.log(id)
+    let payload = {
+      survey_id: id,
+    }
+    axios({
+      method: 'post',
+      url: '/survey_delete',
+      data: payload,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        alert('survey deleted!')
+        listSurvey()
+      })
+      .catch((error) => {
+        alert('error deleting survey')
+      })
   }
+
   const listSurvey = () => {
     axios({
       method: 'get',
@@ -89,7 +108,13 @@ const SurveyList = () => {
                     Edit
                   </CDropdownItem>
                   <CDropdownDivider />
-                  <CDropdownItem onClick={deleteSurveyHandler}>Delete</CDropdownItem>
+                  <CDropdownItem
+                    onClick={() => {
+                      deleteSurveyHandler(survey.survey_id)
+                    }}
+                  >
+                    Delete
+                  </CDropdownItem>
                 </CDropdownMenu>
               </CDropdown>
             </CTableRow>
