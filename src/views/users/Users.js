@@ -22,6 +22,11 @@ import CIcon from '@coreui/icons-react'
 import { cilSortAlphaDown } from '@coreui/icons'
 import axios from 'axios'
 import UserForm from './UserForm'
+import toast from '../../components/Alert'
+// import { toast } from 'react-toastify'
+// import 'react-toastify/dist/ReactToastify.css'
+// toast.configure()
+
 const Users = () => {
   let initialState = {
     full_name: '',
@@ -75,6 +80,7 @@ const Users = () => {
     // setFormData((prevData) => ({ ...prevData, ...editData }))
     setEditMode(true)
     setVisible(true)
+    setFormData('')
   }
   const deleteUserHandler = (id) => {
     console.log('deleting user' + id)
@@ -88,7 +94,10 @@ const Users = () => {
         'Content-Type': 'application/json',
       },
     }).then((response) => {
-      alert('user deleted!!')
+      toast('user deleted!!', {
+        position: toast.POSITION.TOP_CENTER,
+        type: toast.TYPE.INFO,
+      })
       listUsers()
     })
   }
@@ -113,13 +122,16 @@ const Users = () => {
       .then((response) => {
         if (response.status === 201) {
           setVisible(false)
-          alert('user created!')
+          toast('user created!', {
+            position: toast.POSITION.TOP_CENTER,
+            type: toast.TYPE.SUCCESS,
+          })
           listUsers()
         }
       })
       .catch((error) => {
         setVisible(false)
-        alert('error adding user')
+        toast('error adding user')
       })
   }
 
@@ -136,13 +148,19 @@ const Users = () => {
       .then((response) => {
         if (response.status === 201) {
           setVisible(false)
-          alert('user updated!')
+          toast('user updated!', {
+            position: toast.POSITION.TOP_CENTER,
+            type: toast.TYPE.DEFAULT,
+          })
           listUsers()
         }
       })
       .catch((error) => {
         setVisible(false)
-        alert('error updating user')
+        toast('error updating user', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.ERROR,
+        })
       })
   }
   const addUserHandler = () => {
@@ -209,9 +227,11 @@ const Users = () => {
                       Edit
                     </CDropdownItem>
                     <CDropdownDivider />
-                    <CDropdownItem onClick={() => deleteUserHandler(item.user_id)}>
-                      Delete
-                    </CDropdownItem>
+                    <div>
+                      <CDropdownItem onClick={() => deleteUserHandler(item.user_id)}>
+                        Delete
+                      </CDropdownItem>
+                    </div>
                   </CDropdownMenu>
                 </CDropdown>
               </CTableDataCell>

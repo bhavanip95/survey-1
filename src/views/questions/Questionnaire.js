@@ -21,6 +21,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { cilX, cilPencil } from '@coreui/icons'
+import toast from '../../components/Alert'
 
 const Questionnaire = () => {
   const [title, setTitle] = useState('')
@@ -40,7 +41,7 @@ const Questionnaire = () => {
       setCategories(response.data)
     })
   }
-  const saveCategoryHandler = () => {
+  const saveCategoryHandler = (categoryId) => {
     console.log('saving category')
     const payload = {
       question_category: title,
@@ -56,13 +57,19 @@ const Questionnaire = () => {
       .then((response) => {
         if (response.status === 201) {
           setVisible(false)
-          alert('Category created!')
+          toast('Category created!', {
+            position: toast.POSITION.TOP_CENTER,
+            type: toast.TYPE.SUCCESS,
+          })
           listCategories()
         }
       })
       .catch((error) => {
         setVisible(false)
-        alert('error adding category')
+        toast('error adding category', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.ERROR,
+        })
       })
   }
   const history = useHistory()
@@ -104,20 +111,26 @@ const Questionnaire = () => {
       .then((response) => {
         if (response.status === 201) {
           setVisible(false)
-          alert('Category deleted!')
+          toast('Category deleted!', {
+            position: toast.POSITION.TOP_CENTER,
+            type: toast.TYPE.INFO,
+          })
           listCategories()
         }
       })
       .catch((error) => {
         setVisible(false)
-        alert('error deleting category')
+        toast('error deleting category', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.ERROR,
+        })
       })
   }
   return (
     <div>
       <CCard>
         <CCardHeader>
-          <CButton onClick={() => setVisible(!visible)}>+</CButton>
+          <CButton onClick={() => setVisible(!visible)}>+ Add Category</CButton>
           <CModal visible={visible} onClose={() => setVisible(false)}>
             <CModalHeader onClose={() => setVisible(false)}>
               <CModalTitle>Add a new Questionnaire</CModalTitle>
@@ -155,9 +168,6 @@ const Questionnaire = () => {
                 >
                   {item.question_bank_title}
                   <div>
-                    <CBadge color="info">10</CBadge>
-                    <span> </span>
-
                     <CButtonGroup role="group" aria-label="Basic example">
                       <CButton color="secondary">
                         <CIcon

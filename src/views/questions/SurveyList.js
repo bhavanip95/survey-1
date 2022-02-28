@@ -19,6 +19,7 @@ import {
   CDropdownToggle,
   CDropdown,
 } from '@coreui/react'
+import toast from '../../components/Alert'
 
 const SurveyList = () => {
   const [data, setData] = useState([])
@@ -46,11 +47,17 @@ const SurveyList = () => {
       },
     })
       .then((response) => {
-        alert('survey deleted!')
+        toast('survey deleted!', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.INFO,
+        })
         listSurvey()
       })
       .catch((error) => {
-        alert('error deleting survey')
+        toast('error deleting survey', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.ERROR,
+        })
       })
   }
 

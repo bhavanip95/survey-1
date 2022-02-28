@@ -37,10 +37,10 @@ const Login = () => {
     })
       .then((response) => {
         if (response.data.code === 1) {
-          console.log('login success')
+          alert('login success')
           history.push('/dashboard')
         } else {
-          console.log('login failure')
+          alert('login failure')
           setIsError(true)
         }
       })

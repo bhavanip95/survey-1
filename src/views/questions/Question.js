@@ -22,6 +22,7 @@ import React, { useState, useEffect } from 'react'
 import { cilMove, cilX } from '@coreui/icons'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import toast from '../../components/Alert'
 
 const Question = (props) => {
   const [visible, setVisible] = useState(false)
@@ -35,6 +36,7 @@ const Question = (props) => {
     console.log('adding question')
     const payload = {
       question_name: question,
+      category_name: categoryId,
     }
     axios({
       method: 'post',
@@ -47,19 +49,24 @@ const Question = (props) => {
       .then((response) => {
         if (response.status === 201) {
           setVisible(false)
-          alert('Question created!')
+          toast('Question created!', {
+            position: toast.POSITION.TOP_CENTER,
+            type: toast.TYPE.SUCCESS,
+          })
           listQuestions()
         }
       })
       .catch((error) => {
         setVisible(false)
-        alert('error adding category')
+        toast('error adding category', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.ERROR,
+        })
+
+        // take data from modal
+        //add new object to questions
       })
-
-    // take data from modal
-    //add new object to questions
   }
-
   useEffect(() => {
     console.log('listing questions(Question Component)')
     listQuestions()
@@ -118,13 +125,16 @@ const Question = (props) => {
       })
       .catch((error) => {
         setVisible(false)
-        alert('error fetching data')
+        toast('error fetching data', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.ERROR,
+        })
       })
   }
   return (
     <CCard>
       <CCardHeader>
-        <CButton onClick={() => setVisible(!visible)}>+</CButton>
+        <CButton onClick={() => setVisible(!visible)}>+ Add Questions</CButton>
         <CModal visible={visible} onClose={() => setVisible(false)}>
           <CModalHeader onClose={() => setVisible(false)}>
             <CModalTitle>Add a new Question</CModalTitle>

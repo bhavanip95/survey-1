@@ -16,6 +16,7 @@ import {
   CButton,
 } from '@coreui/react'
 import axios from 'axios'
+import toast from '../../components/Alert'
 
 const SurveyForm = () => {
   const [surveyName, setSurveyName] = useState()
@@ -58,6 +59,7 @@ const SurveyForm = () => {
   useEffect(function () {
     axios({
       method: 'get',
+
       url: '/company_lists',
       headers: {
         'Content-Type': 'application/json',
@@ -94,12 +96,19 @@ const SurveyForm = () => {
     })
       .then((response) => {
         if (response.status === 201) {
-          alert('Category created!')
+          toast('Survey created!', {
+            position: toast.POSITION.TOP_CENTER,
+            type: toast.TYPE.SUCCESS,
+          })
+          history.push('/SurveyList')
         }
       })
 
       .catch((error) => {
-        alert('error adding survey form')
+        toast('error adding survey form', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.ERROR,
+        })
       })
   }
 

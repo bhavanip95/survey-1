@@ -22,25 +22,18 @@ const _nav = [
         icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
       },
       {
-        component: CNavGroup,
-        name: 'Survey Managemnt',
+        component: CNavItem,
+        name: 'Questions category',
+        to: '/questionnaire',
+        icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
+      },
 
-        items: [
-          {
-            component: CNavItem,
-            name: 'Questions category',
-            to: '/questionnaire',
-            icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
-          },
+      {
+        component: CNavItem,
+        name: 'Survey Management',
+        to: '/SurveyList',
 
-          {
-            component: CNavItem,
-            name: 'Survey List',
-            to: '/SurveyList',
-
-            icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
-          },
-        ],
+        icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
       },
     ],
   },

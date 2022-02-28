@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { CRow, CCol } from '@coreui/react'
 import { useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import {
   CCard,
@@ -16,6 +17,7 @@ import {
   CButton,
 } from '@coreui/react'
 import axios from 'axios'
+import toast from '../../components/Alert'
 
 const SurveyEdit = () => {
   const [surveyName, setSurveyName] = useState()
@@ -26,17 +28,9 @@ const SurveyEdit = () => {
   const [endDate, setEndDate] = useState(new Date())
   const [data, setData] = useState([])
   const { surveyId } = useParams()
-  const listQuestions = () => {
-    axios({
-      method: 'get',
-      url: '/question_list',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((response) => {
-      setQuestions(response.data)
-    })
-  }
+
+  const history = useHistory()
+
   const questionDeleteHandlder = (id) => {
     console.log(id)
     setQuestions((prev) => {
@@ -51,6 +45,7 @@ const SurveyEdit = () => {
       let index = prev.findIndex((obj) => obj.question_master_id === id)
       let newData = prev
       newData[index].question_name = value
+      newData[index].updated = true
       return newData
     })
   }
@@ -72,15 +67,20 @@ const SurveyEdit = () => {
       // survey_company_id: "1"
       // survey_end_date: "2022-03-01 00:00:00"
       // survey_id: "1"
+      // survey_question_id :
       // survey_start_date: "2022-02-25 09:26:52"
       // survey_title: "Perforance"
       setSurveyName(surveyData.survey_title)
 
       let surveyQuestions = surveyData.questions_name.split('|')
+      let surveyQuestionId = surveyData.questions_id.split('|')
       console.log(surveyQuestions)
+      console.log(surveyQuestionId)
       let allQuestions = surveyQuestions.map((item, index) => {
-        return { question_master_id: index, question_name: item }
+        return { question_master_id: surveyQuestionId[index], question_name: item, updated: false }
       })
+
+      listCompanies()
       console.log(allQuestions)
       setQuestions(allQuestions)
       //   setStartDate(surveyData.survey_start_date)
@@ -97,6 +97,9 @@ const SurveyEdit = () => {
     // console.log(questions)
     // console.log(d1)
     // console.log(d2)
+    // let payloadQuestions = questions.map((question) => {
+    //   return question.updated === true
+    // })
     let payload = {
       survey_title: surveyName,
       company_id: companyName,
@@ -113,10 +116,34 @@ const SurveyEdit = () => {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => console.log(response))
-      .catch((error) => {
-        alert('error adding survey form')
+      .then((response) => {
+        history.push('/SurveyList')
+        toast('Survey Updated successfully', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.SUCCESS,
+        })
       })
+
+      .catch((error) => {
+        toast('error Updating survey form', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.ERROR,
+        })
+      })
+  }
+
+  const listCompanies = () => {
+    axios({
+      method: 'get',
+
+      url: '/company_lists',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      console.log(response.data)
+      setCompanyList(response.data)
+    })
   }
 
   return (
