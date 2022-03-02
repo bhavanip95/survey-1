@@ -60,6 +60,9 @@ const SurveyEdit = () => {
         'Content-Type': 'application/json',
       },
     }).then((response) => {
+      if (typeof (response.data === Array) && response.data.length === 0) {
+        history.push('/SurveyList')
+      }
       console.log(response.data[0])
       let surveyData = response.data[0]
       //       company_name: "shriram Solutions"
@@ -71,7 +74,7 @@ const SurveyEdit = () => {
       // survey_start_date: "2022-02-25 09:26:52"
       // survey_title: "Perforance"
       setSurveyName(surveyData.survey_title)
-
+      listCompanies(surveyData.survey_company_id)
       let surveyQuestions = surveyData.questions_name.split('|')
       let surveyQuestionId = surveyData.questions_id.split('|')
       console.log(surveyQuestions)
@@ -80,8 +83,6 @@ const SurveyEdit = () => {
         return { question_master_id: surveyQuestionId[index], question_name: item, updated: false }
       })
 
-      listCompanies()
-      console.log(allQuestions)
       setQuestions(allQuestions)
       //   setStartDate(surveyData.survey_start_date)
       //   setEndDate(surveyData.survey_end_date)
@@ -93,46 +94,45 @@ const SurveyEdit = () => {
     let d1 = startDate.toISOString().split('T')[0]
     let d2 = endDate.toISOString().split('T')[0]
     // console.log(surveyName)
-    // console.log(companyName)
+    console.log(companyName)
+
     // console.log(questions)
     // console.log(d1)
     // console.log(d2)
-    // let payloadQuestions = questions.map((question) => {
-    //   return question.updated === true
-    // })
+    let payloadQuestions = questions.filter((question) => question.updated === true)
     let payload = {
       survey_title: surveyName,
       company_id: companyName,
       survey_startdate: d1,
       survey_enddate: d2,
-      questions: questions,
+      questions: payloadQuestions,
     }
     console.log(payload)
-    axios({
-      method: 'post',
-      url: '/survey_form',
-      data: payload,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        history.push('/SurveyList')
-        toast('Survey Updated successfully', {
-          position: toast.POSITION.TOP_CENTER,
-          type: toast.TYPE.SUCCESS,
-        })
-      })
+    // axios({
+    //   method: 'post',
+    //   url: '/survey_form',
+    //   data: payload,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then((response) => {
+    //     history.push('/SurveyList')
+    //     toast('Survey Updated successfully', {
+    //       position: toast.POSITION.TOP_CENTER,
+    //       type: toast.TYPE.SUCCESS,
+    //     })
+    //   })
 
-      .catch((error) => {
-        toast('error Updating survey form', {
-          position: toast.POSITION.TOP_CENTER,
-          type: toast.TYPE.ERROR,
-        })
-      })
+    //   .catch((error) => {
+    //     toast('error Updating survey form', {
+    //       position: toast.POSITION.TOP_CENTER,
+    //       type: toast.TYPE.ERROR,
+    //     })
+    //   })
   }
 
-  const listCompanies = () => {
+  const listCompanies = (companyId) => {
     axios({
       method: 'get',
 
@@ -143,6 +143,8 @@ const SurveyEdit = () => {
     }).then((response) => {
       console.log(response.data)
       setCompanyList(response.data)
+      let obj = response.data.filter((cp) => cp.company_id === companyId)
+      if (obj.length > 0) setCompanyName(obj[0].company_name)
     })
   }
 
@@ -162,7 +164,10 @@ const SurveyEdit = () => {
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="Company List">Select Company from the Options</CFormLabel>
-            <CFormSelect onChange={(event) => setCompanyName(event.target.value)}>
+            <CFormSelect
+              onChange={(event) => setCompanyName(event.target.value)}
+              value={companyName}
+            >
               {companyList.map((company) => (
                 <option key={company.user_id} value={company.user_id}>
                   {company.company_name}

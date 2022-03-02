@@ -26,6 +26,11 @@ import toast from '../../components/Alert'
 const Questionnaire = () => {
   const [title, setTitle] = useState('')
   const [categories, setCategories] = useState([])
+  const history = useHistory()
+  const [visible, setVisible] = useState(false)
+  const [isEditMode, setIsEditMode] = useState(false)
+  const [categoryId, setCategoryId] = useState('')
+
   useEffect(() => {
     listCategories()
   }, [])
@@ -41,14 +46,15 @@ const Questionnaire = () => {
       setCategories(response.data)
     })
   }
-  const saveCategoryHandler = (categoryId) => {
+  const saveCategoryHandler = () => {
     console.log('saving category')
     const payload = {
       question_category: title,
     }
+    if (isEditMode) payload.category_id = categoryId
     axios({
       method: 'post',
-      url: '/category_add',
+      url: isEditMode ? 'category_edit' : '/category_add',
       data: payload, // you are sending body instead
       headers: {
         'Content-Type': 'application/json',
@@ -57,7 +63,8 @@ const Questionnaire = () => {
       .then((response) => {
         if (response.status === 201) {
           setVisible(false)
-          toast('Category created!', {
+          let message = isEditMode ? 'Category Updated' : 'Category created!'
+          toast(message, {
             position: toast.POSITION.TOP_CENTER,
             type: toast.TYPE.SUCCESS,
           })
@@ -72,28 +79,16 @@ const Questionnaire = () => {
         })
       })
   }
-  const history = useHistory()
-  const [visible, setVisible] = useState(false)
   const questionnaireClickedHandler = (categoryId) => {
     history.push('questionnaire/edit/' + categoryId)
-    /*console.log(categoryId)
-    axios({
-      method: 'post',
-      url: '/questions_load',
-      data: {
-        category_id: categoryId,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        console.log(response.data) //just iterrate this one ok
-      })
-      .catch((error) => {
-        setVisible(false)
-        alert('error fetching data')
-      })*/
+  }
+
+  const editCategoryHandler = (id) => {
+    setVisible(true)
+    setIsEditMode(true)
+    setCategoryId(id)
+    let catObj = categories.filter((cat) => cat.question_bank_id === id)
+    setTitle(catObj[0].question_bank_title)
   }
   const deleteCategoryHandler = (categoryId) => {
     console.log(categoryId)
@@ -152,7 +147,7 @@ const Questionnaire = () => {
                 Close
               </CButton>
               <CButton color="primary" onClick={saveCategoryHandler}>
-                Add
+                {isEditMode ? 'Update' : 'Add'}
               </CButton>
             </CModalFooter>
           </CModal>
@@ -165,6 +160,9 @@ const Questionnaire = () => {
                   className="d-flex justify-content-between align-items-center"
                   key={item.question_bank_id}
                   component="a"
+                  onClick={() => {
+                    questionnaireClickedHandler(item.question_bank_id)
+                  }}
                 >
                   {item.question_bank_title}
                   <div>
@@ -182,8 +180,9 @@ const Questionnaire = () => {
                         <CIcon
                           icon={cilPencil}
                           size="lg"
-                          onClick={() => {
-                            questionnaireClickedHandler(item.question_bank_id)
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            editCategoryHandler(item.question_bank_id)
                           }}
                         />
                       </CButton>

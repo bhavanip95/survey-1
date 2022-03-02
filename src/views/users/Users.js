@@ -80,7 +80,6 @@ const Users = () => {
     // setFormData((prevData) => ({ ...prevData, ...editData }))
     setEditMode(true)
     setVisible(true)
-    setFormData('')
   }
   const deleteUserHandler = (id) => {
     console.log('deleting user' + id)
@@ -133,6 +132,7 @@ const Users = () => {
         setVisible(false)
         toast('error adding user')
       })
+    setFormData(initialState)
   }
 
   const updateUserHandler = (payload) => {
@@ -146,7 +146,7 @@ const Users = () => {
       },
     })
       .then((response) => {
-        if (response.status === 201) {
+        if (response.data.status === 201) {
           setVisible(false)
           toast('user updated!', {
             position: toast.POSITION.TOP_CENTER,
@@ -162,6 +162,7 @@ const Users = () => {
           type: toast.TYPE.ERROR,
         })
       })
+    setFormData(initialState)
   }
   const addUserHandler = () => {
     setVisible(!visible)
@@ -169,10 +170,11 @@ const Users = () => {
   }
   const sortIcon = <CIcon className="me-2" icon={cilSortAlphaDown} size="sm" />
   return (
-    <CCard>
+    <CCard style={{ minHeight: '50vh' }}>
       <UserForm
         onClose={() => {
           setVisible(false)
+          setFormData(initialState)
         }}
         visible={visible}
         onDone={saveUserHandler}

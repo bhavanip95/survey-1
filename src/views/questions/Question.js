@@ -28,6 +28,7 @@ const Question = (props) => {
   const [visible, setVisible] = useState(false)
   const [question, setQuestion] = useState('')
   const [questions, setQuestions] = useState([])
+  const [categoryName, setCategoryName] = useState('')
   // const categoryId = 1
   // const questions = data.filter((obj) => obj.category_id === categoryId)
   const { categoryId } = useParams()
@@ -145,7 +146,7 @@ const Question = (props) => {
               <CFormInput
                 type="text"
                 id="title"
-                placeholder="Category Title"
+                placeholder=" Question "
                 value={question}
                 onChange={(event) => setQuestion(event.target.value)}
               ></CFormInput>
@@ -162,6 +163,14 @@ const Question = (props) => {
         </CModal>
       </CCardHeader>
       <CCardBody>
+        <CFormLabel>Category Name</CFormLabel>
+        <CFormInput
+          type="text"
+          id="title"
+          placeholder="Category Name"
+          value={categoryName}
+          onChange={(event) => setCategoryName(event.target.value)}
+        ></CFormInput>
         <CListGroup>
           {questions.map((item) => {
             return (

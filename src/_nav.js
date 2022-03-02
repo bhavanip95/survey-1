@@ -23,7 +23,7 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Questions category',
+        name: 'Question Master list',
         to: '/questionnaire',
         icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
       },
