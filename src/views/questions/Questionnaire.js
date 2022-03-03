@@ -85,6 +85,7 @@ const Questionnaire = () => {
 
   const editCategoryHandler = (id) => {
     setVisible(true)
+
     setIsEditMode(true)
     setCategoryId(id)
     let catObj = categories.filter((cat) => cat.question_bank_id === id)

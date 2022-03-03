@@ -68,6 +68,36 @@ const Question = (props) => {
         //add new object to questions
       })
   }
+
+  const saveQuestion = (question) => {
+    let payload = {
+      question_name: question.question_name,
+      category_name: categoryId,
+      question_id: question.question_master_id,
+    }
+    axios({
+      method: 'post',
+      url: '/question_update',
+      data: payload,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+  const updateHandler = () => {
+    questions.map((q) => {
+      if (q.updated === true) {
+        saveQuestion(q)
+      }
+    })
+    listQuestions()
+  }
   useEffect(() => {
     console.log('listing questions(Question Component)')
     listQuestions()
@@ -122,7 +152,12 @@ const Question = (props) => {
       },
     })
       .then((response) => {
-        setQuestions(response.data) //just iterrate this one ok
+        let q = response.data.map((d) => {
+          return { ...d, updated: false }
+        })
+        console.log(q)
+
+        setQuestions(q) //just iterrate this one ok
       })
       .catch((error) => {
         setVisible(false)
@@ -136,6 +171,7 @@ const Question = (props) => {
     <CCard>
       <CCardHeader>
         <CButton onClick={() => setVisible(!visible)}>+ Add Questions</CButton>
+        <CButton onClick={updateHandler}>Update</CButton>
         <CModal visible={visible} onClose={() => setVisible(false)}>
           <CModalHeader onClose={() => setVisible(false)}>
             <CModalTitle>Add a new Question</CModalTitle>
@@ -163,14 +199,6 @@ const Question = (props) => {
         </CModal>
       </CCardHeader>
       <CCardBody>
-        <CFormLabel>Category Name</CFormLabel>
-        <CFormInput
-          type="text"
-          id="title"
-          placeholder="Category Name"
-          value={categoryName}
-          onChange={(event) => setCategoryName(event.target.value)}
-        ></CFormInput>
         <CListGroup>
           {questions.map((item) => {
             return (
@@ -189,6 +217,17 @@ const Question = (props) => {
                 <CFormTextarea
                   readOnly={true}
                   onClick={(event) => (event.target.readOnly = false)}
+                  onChange={(event) => {
+                    setQuestions((st) => {
+                      let editedObj = st.find(
+                        (po) => po.question_master_id === item.question_master_id,
+                      )
+                      editedObj.question_name = event.target.value
+                      editedObj.updated = true
+                      console.log(editedObj)
+                      return st
+                    })
+                  }}
                   defaultValue={item.question_name}
                 ></CFormTextarea>
                 <span> </span>
