@@ -168,6 +168,14 @@ const Users = () => {
     setVisible(!visible)
     setEditMode(false)
   }
+  const searchHandler = (i) => {
+    console.log(i)
+    let searchData = data.filter((user) => {
+      if (user.company_name.includes(i) || user.user_full_name.includes(i)) return user
+    })
+    console.log(searchData)
+    setData((prev) => searchData)
+  }
   const sortIcon = <CIcon className="me-2" icon={cilSortAlphaDown} size="sm" />
   return (
     <CCard style={{ minHeight: '50vh' }}>
@@ -184,9 +192,13 @@ const Users = () => {
       />
       <CRow className="p-3 m-0 border bg-light">
         <CCol xs={8}>
-          <CFormInput id="exampleFormControlInput1" placeholder="Search FullName or CompanyName" />
+          <CFormInput
+            id="exampleFormControlInput1"
+            placeholder="Search FullName or CompanyName"
+            onChange={(event) => searchHandler(event.target.value)}
+          />
         </CCol>
-        <CCol xs={4} text-center>
+        <CCol xs={4} className="text-center">
           <CButton onClick={addUserHandler}>Add User</CButton>
         </CCol>
       </CRow>

@@ -47,6 +47,7 @@ const SurveyEdit = () => {
       newData[index].question_name = value
       newData[index].updated = true
       return newData
+      
     })
   }
 
