@@ -13,11 +13,6 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CDropdownItem,
-  CDropdownDivider,
-  CDropdownMenu,
-  CDropdownToggle,
-  CDropdown,
 } from '@coreui/react'
 import toast from '../../components/Alert'
 
@@ -104,26 +99,29 @@ const SurveyList = () => {
               <CTableDataCell>{survey.company_name}</CTableDataCell>
               <CTableDataCell>{survey.survey_start_date}</CTableDataCell>
               <CTableDataCell>{survey.survey_end_date}</CTableDataCell>
-              <CDropdown variant="btn-group">
-                <CDropdownToggle color="info">Action</CDropdownToggle>
-                <CDropdownMenu>
-                  <CDropdownItem
-                    onClick={() => {
-                      editSurveyHandler(survey.survey_id)
-                    }}
-                  >
-                    Edit
-                  </CDropdownItem>
-                  <CDropdownDivider />
-                  <CDropdownItem
-                    onClick={() => {
-                      deleteSurveyHandler(survey.survey_id)
-                    }}
-                  >
-                    Delete
-                  </CDropdownItem>
-                </CDropdownMenu>
-              </CDropdown>
+
+              <CTableDataCell>
+                <CRow>
+                  <CCol>
+                    <CButton
+                      onClick={() => {
+                        editSurveyHandler(survey.survey_id)
+                      }}
+                    >
+                      Edit
+                    </CButton>
+                  </CCol>
+                  <CCol>
+                    <CButton
+                      onClick={() => {
+                        deleteSurveyHandler(survey.survey_id)
+                      }}
+                    >
+                      Delete
+                    </CButton>
+                  </CCol>
+                </CRow>
+              </CTableDataCell>
             </CTableRow>
           ))}
         </CTableBody>

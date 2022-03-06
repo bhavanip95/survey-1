@@ -12,11 +12,6 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CDropdownItem,
-  CDropdownDivider,
-  CDropdownMenu,
-  CDropdownToggle,
-  CDropdown,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilSortAlphaDown } from '@coreui/icons'
@@ -218,7 +213,7 @@ const Users = () => {
               Created Date
               {sortIcon}
             </CTableHeaderCell>
-            <CTableHeaderCell>Actions</CTableHeaderCell>
+            <CTableHeaderCell className="text-center"> Actions</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -234,20 +229,14 @@ const Users = () => {
                 <div>{item.company_created_date}</div>
               </CTableDataCell>
               <CTableDataCell>
-                <CDropdown variant="btn-group">
-                  <CDropdownToggle color="info">Action</CDropdownToggle>
-                  <CDropdownMenu>
-                    <CDropdownItem onClick={() => editUserHandler(item.user_id)}>
-                      Edit
-                    </CDropdownItem>
-                    <CDropdownDivider />
-                    <div>
-                      <CDropdownItem onClick={() => deleteUserHandler(item.user_id)}>
-                        Delete
-                      </CDropdownItem>
-                    </div>
-                  </CDropdownMenu>
-                </CDropdown>
+                <CRow className="text-center">
+                  <CCol xs={2}>
+                    <CButton onClick={() => editUserHandler(item.user_id)}> Edit</CButton>
+                  </CCol>
+                  <CCol xs={2}>
+                    <CButton onClick={() => deleteUserHandler(item.user_id)}>Delete</CButton>
+                  </CCol>
+                </CRow>
               </CTableDataCell>
             </CTableRow>
           ))}
