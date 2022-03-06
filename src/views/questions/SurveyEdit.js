@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import AllQuestions from './AllQuestions'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -28,6 +28,7 @@ const SurveyEdit = () => {
   const [endDate, setEndDate] = useState(new Date())
   const [data, setData] = useState([])
   const { surveyId } = useParams()
+  const companyRef = useRef()
 
   const history = useHistory()
 
@@ -47,7 +48,6 @@ const SurveyEdit = () => {
       newData[index].question_name = value
       newData[index].updated = true
       return newData
-      
     })
   }
 
@@ -61,20 +61,13 @@ const SurveyEdit = () => {
         'Content-Type': 'application/json',
       },
     }).then((response) => {
-      if (typeof (response.data === Array) && response.data.length === 0) {
-        history.push('/SurveyList')
-      }
-      console.log(response.data[0])
+      // if (typeof (response.data === Array) && response.data.length === 0) {
+      //   history.push('/SurveyList')
+      // }
+      console.log(response.data)
       let surveyData = response.data[0]
-      //       company_name: "shriram Solutions"
-      // questions_name: "Do you track gross profit by customer/project and by product/service?|Do you track revenue/sales per person per month?|Does your management team know what revenue/sales you need to achieve each month to breakeven?|Is your biggest customer less than 25% of your sales/revenue?|Have you distributed an organisational chart to your staff?|Have you distributed position descriptions to your supervisors/managers?|Do you maintain a rolling 13 week cash flow forecast?|Do you know how long your working capital cycle is in days?"
-      // survey_company_id: "1"
-      // survey_end_date: "2022-03-01 00:00:00"
-      // survey_id: "1"
-      // survey_question_id :
-      // survey_start_date: "2022-02-25 09:26:52"
-      // survey_title: "Perforance"
       setSurveyName(surveyData.survey_title)
+      console.log(surveyData)
       listCompanies(surveyData.survey_company_id)
       let surveyQuestions = surveyData.questions_name.split('|')
       let surveyQuestionId = surveyData.questions_id.split('|')
@@ -102,35 +95,36 @@ const SurveyEdit = () => {
     // console.log(d2)
     let payloadQuestions = questions.filter((question) => question.updated === true)
     let payload = {
+      survey_id: surveyId,
       survey_title: surveyName,
-      company_id: companyName,
+      company_id: companyRef.current.value,
       survey_startdate: d1,
       survey_enddate: d2,
       questions: payloadQuestions,
     }
     console.log(payload)
-    // axios({
-    //   method: 'post',
-    //   url: '/survey_form',
-    //   data: payload,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // })
-    //   .then((response) => {
-    //     history.push('/SurveyList')
-    //     toast('Survey Updated successfully', {
-    //       position: toast.POSITION.TOP_CENTER,
-    //       type: toast.TYPE.SUCCESS,
-    //     })
-    //   })
+    axios({
+      method: 'post',
+      url: '/survey_update',
+      data: payload,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        toast('Survey Updated successfully', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.SUCCESS,
+        })
+        history.push('/SurveyList')
+      })
 
-    //   .catch((error) => {
-    //     toast('error Updating survey form', {
-    //       position: toast.POSITION.TOP_CENTER,
-    //       type: toast.TYPE.ERROR,
-    //     })
-    //   })
+      .catch((error) => {
+        toast('error Updating survey form', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.ERROR,
+        })
+      })
   }
 
   const listCompanies = (companyId) => {
@@ -145,6 +139,7 @@ const SurveyEdit = () => {
       console.log(response.data)
       setCompanyList(response.data)
       let obj = response.data.filter((cp) => cp.company_id === companyId)
+      companyRef.current.value = companyId
       if (obj.length > 0) setCompanyName(obj[0].company_name)
     })
   }
@@ -166,11 +161,12 @@ const SurveyEdit = () => {
           <div className="mb-3">
             <CFormLabel htmlFor="Company List">Select Company from the Options</CFormLabel>
             <CFormSelect
-              onChange={(event) => setCompanyName(event.target.value)}
-              value={companyName}
+              // onChange={(event) => setCompanyName(event.target.value)}
+              // value={companyName}
+              ref={companyRef}
             >
               {companyList.map((company) => (
-                <option key={company.user_id} value={company.user_id}>
+                <option key={company.company_id} value={company.company_id}>
                   {company.company_name}
                 </option>
               ))}

@@ -54,7 +54,7 @@ const Questionnaire = () => {
     if (isEditMode) payload.category_id = categoryId
     axios({
       method: 'post',
-      url: isEditMode ? 'category_update' : '/category_add',
+      url: isEditMode ? '/category_update' : '/category_add',
       data: payload, // you are sending body instead
       headers: {
         'Content-Type': 'application/json',

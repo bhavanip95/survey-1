@@ -131,7 +131,7 @@ const SurveyForm = () => {
             <CFormSelect onChange={(event) => setCompanyName(event.target.value)}>
               <option>Select Company name from the options</option>
               {companyList.map((company) => (
-                <option key={company.user_id} value={company.user_id}>
+                <option key={company.company_id} value={company.company_id}>
                   {company.company_name}
                 </option>
               ))}
