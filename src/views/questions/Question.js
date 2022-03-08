@@ -56,6 +56,7 @@ const Question = (props) => {
             position: toast.POSITION.TOP_CENTER,
             type: toast.TYPE.SUCCESS,
           })
+          setQuestion('')
           listQuestions()
         }
       })

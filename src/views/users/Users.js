@@ -194,7 +194,9 @@ const Users = () => {
           />
         </CCol>
         <CCol xs={4} className="text-center">
-          <CButton onClick={addUserHandler}>Add User</CButton>
+          <CButton size="lg" onClick={addUserHandler}>
+            Add User
+          </CButton>
         </CCol>
       </CRow>
 
@@ -213,7 +215,7 @@ const Users = () => {
               Created Date
               {sortIcon}
             </CTableHeaderCell>
-            <CTableHeaderCell className="text-center"> Actions</CTableHeaderCell>
+            {/* <CTableHeaderCell colSpan="2">Actions</CTableHeaderCell> */}
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -228,13 +230,18 @@ const Users = () => {
               <CTableDataCell>
                 <div>{item.company_created_date}</div>
               </CTableDataCell>
-              <CTableDataCell>
-                <CRow className="text-center">
-                  <CCol xs={2}>
-                    <CButton onClick={() => editUserHandler(item.user_id)}> Edit</CButton>
+              <CTableDataCell colSpan="2" className="text-center">
+                <CRow>
+                  <CCol>
+                    <CButton color="secondary" onClick={() => editUserHandler(item.user_id)}>
+                      {' '}
+                      Edit
+                    </CButton>
                   </CCol>
-                  <CCol xs={2}>
-                    <CButton onClick={() => deleteUserHandler(item.user_id)}>Delete</CButton>
+                  <CCol>
+                    <CButton color="danger" onClick={() => deleteUserHandler(item.user_id)}>
+                      Delete
+                    </CButton>
                   </CCol>
                 </CRow>
               </CTableDataCell>

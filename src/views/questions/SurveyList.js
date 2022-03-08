@@ -104,6 +104,7 @@ const SurveyList = () => {
                 <CRow>
                   <CCol>
                     <CButton
+                      color="secondary"
                       onClick={() => {
                         editSurveyHandler(survey.survey_id)
                       }}
@@ -113,6 +114,7 @@ const SurveyList = () => {
                   </CCol>
                   <CCol>
                     <CButton
+                      color="danger"
                       onClick={() => {
                         deleteSurveyHandler(survey.survey_id)
                       }}

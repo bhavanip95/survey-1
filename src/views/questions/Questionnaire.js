@@ -69,6 +69,7 @@ const Questionnaire = () => {
             type: toast.TYPE.SUCCESS,
           })
           listCategories()
+          setTitle('')
         }
       })
       .catch((error) => {
@@ -172,7 +173,8 @@ const Questionnaire = () => {
                         <CIcon
                           icon={cilX}
                           size="lg"
-                          onClick={() => {
+                          onClick={(event) => {
+                            event.stopPropagation()
                             deleteCategoryHandler(item.question_bank_id)
                           }}
                         />
