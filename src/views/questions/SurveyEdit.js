@@ -78,8 +78,8 @@ const SurveyEdit = () => {
       })
 
       setQuestions(allQuestions)
-      //   setStartDate(surveyData.survey_start_date)
-      //   setEndDate(surveyData.survey_end_date)
+      setStartDate(Date.parse(surveyData.survey_start_date))
+      setEndDate(Date.parse(surveyData.survey_end_date))
     })
   }, [])
 
