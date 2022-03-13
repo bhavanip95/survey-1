@@ -2,6 +2,8 @@ import {
   CButton,
   CButtonGroup,
   CCard,
+  CRow,
+  CTable,
   CCardBody,
   CCardHeader,
   CListGroup,
@@ -15,6 +17,7 @@ import {
   CFormLabel,
   CFormInput,
   CBadge,
+  CCol,
 } from '@coreui/react'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
@@ -127,7 +130,15 @@ const Questionnaire = () => {
     <div>
       <CCard>
         <CCardHeader>
-          <CButton onClick={() => setVisible(!visible)}>+ Add Category</CButton>
+          <CRow className="p-2 m-0 border bg-light">
+            <CCol xs={8}></CCol>
+            <CCol xs={4}>
+              <CButton size="lg" onClick={() => setVisible(!visible)}>
+                + Add Category
+              </CButton>
+            </CCol>
+          </CRow>
+
           <CModal visible={visible} onClose={() => setVisible(false)}>
             <CModalHeader onClose={() => setVisible(false)}>
               <CModalTitle>Add a new Questionnaire</CModalTitle>
@@ -140,7 +151,7 @@ const Questionnaire = () => {
                   id="title"
                   placeholder="Category Title"
                   value={title}
-                  onChange={(event) => setTitle(event.target.value)}
+                  onClick={(event) => setTitle(event.target.value)}
                 ></CFormInput>
               </CForm>
             </CModalBody>

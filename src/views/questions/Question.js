@@ -109,43 +109,79 @@ const Question = (props) => {
     console.log('listing questions(Question Component)')
     listQuestions()
   }, [])
-  let dragged
-  let id
-  let index
-  let indexDrop
-  let list
-  const dragStartHandler = (event) => {
-    let target = event.target
-    dragged = event.target
-    id = target.id
-    list = target.parentNode.children
-    for (let i = 0; i < list.length; i += 1) {
-      if (list[i] === dragged) {
-        index = i
-      }
-    }
-  }
-  const dragOverHandler = (event) => {
-    event.preventDefault()
-  }
-  const dropHandler = (event) => {
-    console.log('dropped')
-    let target = event.target
-    if (target.className.includes('dropzone') && target.id !== id) {
-      dragged.remove(dragged)
-      for (let i = 0; i < list.length; i += 1) {
-        if (list[i] === target) {
-          indexDrop = i
+  // let dragged
+  // let id
+  // let index
+  // let indexDrop
+  // let list
+  // const dragStartHandler = (event) => {
+  //   let target = event.target
+  //   dragged = event.target
+  //   id = target.id
+  //   list = target.parentNode.children
+  //   for (let i = 0; i < list.length; i += 1) {
+  //     if (list[i] === dragged) {
+  //       index = i
+  //     }
+  //   }
+  // }
+  // const dragOverHandler = (event) => {
+  //   event.preventDefault()
+  // }
+  // const dropHandler = (event) => {
+  //   console.log('dropped')
+  //   let target = event.target
+  //   if (target.className.includes('dropzone') && target.id !== id) {
+  //     dragged.remove(dragged)
+  //     for (let i = 0; i < list.length; i += 1) {
+  //       if (list[i] === target) {
+  //         indexDrop = i
+  //       }
+  //     }
+  //     console.log(index, indexDrop)
+  //     if (index > indexDrop) {
+  //       target.before(dragged)
+  //     } else {
+  //       target.after(dragged)
+  //     }
+  //   }
+  // }
+  const questionDeleteHandler = (questionId) => {
+    console.log('deleting question')
+
+    axios({
+      method: 'post',
+      url: '/question_delete',
+      data: {
+        question_id: questionId,
+      }, // you are sending body instead
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          setVisible(false)
+          toast('Question deleted!', {
+            position: toast.POSITION.TOP_CENTER,
+            type: toast.TYPE.SUCCESS,
+          })
+          setQuestion('')
+          listQuestions()
         }
-      }
-      console.log(index, indexDrop)
-      if (index > indexDrop) {
-        target.before(dragged)
-      } else {
-        target.after(dragged)
-      }
-    }
+      })
+      .catch((error) => {
+        setVisible(false)
+        toast('error deleting question', {
+          position: toast.POSITION.TOP_CENTER,
+          type: toast.TYPE.ERROR,
+        })
+
+        // take data from modal
+        //add new object to questions
+      })
   }
+
   const listQuestions = () => {
     console.log(categoryId)
     axios({
@@ -178,11 +214,14 @@ const Question = (props) => {
     <CCard>
       <CCardHeader>
         <CRow className="p-3 m-0 border bg-light">
-          <CCol xs={8}>
+          <CCol xs={6}></CCol>
+          <CCol xs={3} className="text-right">
             <CButton onClick={() => setVisible(!visible)}>+ Add Questions</CButton>
           </CCol>
-          <CCol xs={4} className="text-right">
-            <CButton onClick={updateHandler}>Update</CButton>
+          <CCol xs={3} className="text-right">
+            <CButton color="info" onClick={updateHandler}>
+              Update
+            </CButton>
           </CCol>
         </CRow>
         <CModal visible={visible} onClose={() => setVisible(false)}>
@@ -219,14 +258,14 @@ const Question = (props) => {
                 key={item.question_master_id}
                 className="d-flex justify-content-between align-items-center dropzone"
                 id={item.question_master_id}
-                draggable="true"
-                onDragStart={dragStartHandler}
-                onDragOver={dragOverHandler}
-                onDrop={dropHandler}
+                // draggable="true"
+                // onDragStart={dragStartHandler}
+                // onDragOver={dragOverHandler}
+                // onDrop={dropHandler}
               >
-                <span>
+                {/* <span>
                   <CIcon icon={cilMove} size="lg" />
-                </span>
+                </span> */}
                 <CFormTextarea
                   readOnly={true}
                   onClick={(event) => (event.target.readOnly = false)}
@@ -244,7 +283,14 @@ const Question = (props) => {
                   defaultValue={item.question_name}
                 ></CFormTextarea>
                 <span> </span>
-                <CIcon icon={cilX} size="lg" />
+                <CIcon
+                  icon={cilX}
+                  size="lg"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    questionDeleteHandler(item.question_master_id)
+                  }}
+                />
               </CListGroupItem>
             )
           })}

@@ -35,6 +35,7 @@ const Users = () => {
   const [data, setData] = useState([])
   const [editMode, setEditMode] = useState(false)
   const [formData, setFormData] = useState(initialState)
+  const [initialData, setInitialData] = useState([])
   useEffect(() => {
     listUsers()
   }, [])
@@ -48,6 +49,7 @@ const Users = () => {
       },
     }).then((response) => {
       setData(response.data)
+      setInitialData(response.data)
     })
   }
   const editUserHandler = (id) => {
@@ -95,15 +97,7 @@ const Users = () => {
       listUsers()
     })
   }
-  const sortByNameHandler = () => {
-    console.log('sort by name handler')
-  }
-  const sortByCreatedDateHandler = () => {
-    console.log('sort by created date handler')
-  }
-  const sortByCompnayNameHandler = () => {
-    console.log('sort by company name handler')
-  }
+
   const saveUserHandler = (payload) => {
     axios({
       method: 'post',
@@ -143,7 +137,7 @@ const Users = () => {
       .then((response) => {
         if (response.data.status === 201) {
           setVisible(false)
-          toast('user updated!', {
+          toast('User updated successfully!!', {
             position: toast.POSITION.TOP_CENTER,
             type: toast.TYPE.DEFAULT,
           })
@@ -165,13 +159,18 @@ const Users = () => {
   }
   const searchHandler = (i) => {
     console.log(i)
-    let searchData = data.filter((user) => {
-      if (user.company_name.includes(i) || user.user_full_name.includes(i)) return user
+    if (i.trim().toLowerCase() === '') setData((prev) => initialData)
+    let searchData = initialData.filter((user) => {
+      if (
+        user.company_name.toLowerCase().includes(i) ||
+        user.user_full_name.toLowerCase().includes(i)
+      )
+        return user
     })
     console.log(searchData)
     setData((prev) => searchData)
   }
-  const sortIcon = <CIcon className="me-2" icon={cilSortAlphaDown} size="sm" />
+
   return (
     <CCard style={{ minHeight: '50vh' }}>
       <UserForm
@@ -186,7 +185,7 @@ const Users = () => {
         data={formData}
       />
       <CRow className="p-3 m-0 border bg-light">
-        <CCol xs={8}>
+        <CCol xs={8} className="text-center">
           <CFormInput
             id="exampleFormControlInput1"
             placeholder="Search FullName or CompanyName"
@@ -203,18 +202,9 @@ const Users = () => {
       <CTable align="middle" className="mb-0 border" hover responsive>
         <CTableHead color="light">
           <CTableRow>
-            <CTableHeaderCell onClick={sortByNameHandler}>
-              Full Name
-              {sortIcon}
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={sortByCompnayNameHandler}>
-              Company Name
-              {sortIcon}
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={sortByCreatedDateHandler}>
-              Created Date
-              {sortIcon}
-            </CTableHeaderCell>
+            <CTableHeaderCell>Full Name</CTableHeaderCell>
+            <CTableHeaderCell>Company Name</CTableHeaderCell>
+            <CTableHeaderCell>Created Date</CTableHeaderCell>
             {/* <CTableHeaderCell colSpan="2">Actions</CTableHeaderCell> */}
           </CTableRow>
         </CTableHead>

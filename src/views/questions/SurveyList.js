@@ -18,7 +18,7 @@ import toast from '../../components/Alert'
 
 const SurveyList = () => {
   const [data, setData] = useState([])
-
+  const [initialData, setInitialData] = useState([])
   const history = useHistory()
 
   useEffect(() => {
@@ -26,6 +26,19 @@ const SurveyList = () => {
   }, [])
   const editSurveyHandler = (id) => {
     history.push('/SurveyList/edit/' + id)
+  }
+  const searchHandler = (i) => {
+    console.log(i)
+    if (i.trim().toLowerCase() === '') setData((prev) => initialData)
+    let searchData = initialData.filter((user) => {
+      if (
+        user.company_name.toLowerCase().includes(i) ||
+        user.survey_title.toLowerCase().includes(i)
+      )
+        return user
+    })
+    console.log(searchData)
+    setData((prev) => searchData)
   }
 
   const deleteSurveyHandler = (id) => {
@@ -65,20 +78,24 @@ const SurveyList = () => {
       },
     }).then((response) => {
       setData(response.data)
+      setInitialData(response.data)
     })
   }
 
   return (
     <CCard>
       <CRow className="p-3 m-0 border bg-light">
-        <CCol xs={8}>
+        <CCol xs={8} className="p-1">
           <CFormInput
             id="exampleFormControlInput1"
             placeholder="Search Survey Title or CompanyName"
+            onChange={(event) => searchHandler(event.target.value)}
           />
         </CCol>
-        <CCol xs={4} text-center>
-          <CButton onClick={() => history.push('/SurveyForm')}>Create Survey</CButton>
+        <CCol xs={4} className="text-center">
+          <CButton size="lg" onClick={() => history.push('/SurveyForm')}>
+            Create Survey
+          </CButton>
         </CCol>
       </CRow>
 
@@ -118,6 +135,7 @@ const SurveyList = () => {
                       onClick={() => {
                         deleteSurveyHandler(survey.survey_id)
                       }}
+                      disabled
                     >
                       Delete
                     </CButton>
