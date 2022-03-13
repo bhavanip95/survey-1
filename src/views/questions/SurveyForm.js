@@ -143,8 +143,8 @@ const SurveyForm = () => {
             deleteCallback={questionDeleteHandlder}
           />{' '}
           <br /> <br />
-          <CRow className="p-3 m-3 border bg-light">
-            <CCol xs={6}>
+          <CRow className="justify-content-evenly">
+            <CCol xs={4}>
               <label>survey Start date</label>
               <DatePicker
                 dateFormat="dd/MM/yyyy"
@@ -156,7 +156,7 @@ const SurveyForm = () => {
               />
             </CCol>
 
-            <CCol xs={6}>
+            <CCol xs={4}>
               <label>survey End date</label>
               <DatePicker
                 dateFormat="dd/MM/yyyy"
@@ -169,14 +169,22 @@ const SurveyForm = () => {
             </CCol>
           </CRow>
           <br />
-          <div className="d-grid gap-2 col-6 mx-auto">
-            <CButton color="primary" onClick={saveSurveyHandler}>
-              Submit
-            </CButton>
-            <CCol xs={4} text-center>
-              <CButton onClick={() => history.push('/SurveyList')}>Go back</CButton>
+          <CRow className="justify-content-center">
+            <CCol xs={10}>
+              <CButton
+                className="d-grid gap-2 col-6 mx-auto"
+                color="primary"
+                onClick={saveSurveyHandler}
+              >
+                Submit
+              </CButton>
             </CCol>
-          </div>
+            <CCol xs={2}>
+              <CButton color="link" onClick={() => history.push('/SurveyList')}>
+                Go back
+              </CButton>
+            </CCol>
+          </CRow>
         </CForm>
       </CCardBody>
     </CCard>

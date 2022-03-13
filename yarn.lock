@@ -1114,7 +1114,7 @@
   "resolved" "https://registry.npmjs.org/@coreui/icons/-/icons-2.1.0.tgz"
   "version" "2.1.0"
 
-"@coreui/react-chartjs@^2.0.0":
+"@coreui/react-chartjs@^2.0.3":
   "integrity" "sha512-+cl3slfqUZ7BLKeUlKEHfpt+HSFHmlMyosYYv9R5GqVP+l6rLqNMNcrLVmmsgqf2r++3LEIYaAvL6v4ZF54i/w=="
   "resolved" "https://registry.npmjs.org/@coreui/react-chartjs/-/react-chartjs-2.0.3.tgz"
   "version" "2.0.3"
