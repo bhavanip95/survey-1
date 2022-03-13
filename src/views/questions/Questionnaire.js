@@ -129,15 +129,10 @@ const Questionnaire = () => {
   return (
     <div>
       <CCard>
-        <CCardHeader>
-          <CRow className="p-2 m-0 border bg-light">
-            <CCol xs={8}></CCol>
-            <CCol xs={4}>
-              <CButton size="lg" onClick={() => setVisible(!visible)}>
-                + Add Category
-              </CButton>
-            </CCol>
-          </CRow>
+        <CCardHeader className="align-self-end">
+          <CButton size="lg" onClick={() => setVisible(!visible)}>
+            + Add Category
+          </CButton>
 
           <CModal visible={visible} onClose={() => setVisible(false)}>
             <CModalHeader onClose={() => setVisible(false)}>
@@ -151,7 +146,7 @@ const Questionnaire = () => {
                   id="title"
                   placeholder="Category Title"
                   value={title}
-                  onClick={(event) => setTitle(event.target.value)}
+                  onChange={(event) => setTitle(event.target.value)}
                 ></CFormInput>
               </CForm>
             </CModalBody>
@@ -179,7 +174,7 @@ const Questionnaire = () => {
                 >
                   {item.question_bank_title}
                   <div>
-                    <CButtonGroup role="group" aria-label="Basic example">
+                    <CButtonGroup className="align-self-end">
                       <CButton color="secondary">
                         <CIcon
                           icon={cilX}

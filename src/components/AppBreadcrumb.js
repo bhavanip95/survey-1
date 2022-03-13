@@ -9,17 +9,20 @@ const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
 
   const getRouteName = (pathname, routes) => {
+    console.log(pathname)
+
     const currentRoute = routes.find((route) => route.path === pathname)
-    if (currentRoute) return currentRoute.name
-    return 'edit'
+    return currentRoute.name
   }
 
   const getBreadcrumbs = (location) => {
     const breadcrumbs = []
     location.split('/').reduce((prev, curr, index, array) => {
       const currentPathname = `${prev}/${curr}`
+      if (prev === undefined || prev === 'undefined') return undefined
+      if (currentPathname.includes('/questionnaire/')) return undefined
       breadcrumbs.push({
-        pathname: currentPathname,
+        pathname: '#' + currentPathname,
         name: getRouteName(currentPathname, routes),
         active: index + 1 === array.length ? true : false,
       })

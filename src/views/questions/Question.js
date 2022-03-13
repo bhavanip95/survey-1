@@ -212,18 +212,15 @@ const Question = (props) => {
   }
   return (
     <CCard>
-      <CCardHeader>
-        <CRow className="p-3 m-0 border bg-light">
-          <CCol xs={6}></CCol>
-          <CCol xs={3} className="text-right">
-            <CButton onClick={() => setVisible(!visible)}>+ Add Questions</CButton>
-          </CCol>
-          <CCol xs={3} className="text-right">
-            <CButton color="info" onClick={updateHandler}>
-              Update
-            </CButton>
-          </CCol>
-        </CRow>
+      <CCardHeader className="align-self-end">
+        <CButton className="mx-2" onClick={() => setVisible(!visible)}>
+          + Add Questions
+        </CButton>
+
+        <CButton className="mx-2" onClick={updateHandler}>
+          Update
+        </CButton>
+
         <CModal visible={visible} onClose={() => setVisible(false)}>
           <CModalHeader onClose={() => setVisible(false)}>
             <CModalTitle>Add a new Question</CModalTitle>
