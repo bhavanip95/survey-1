@@ -15,6 +15,8 @@ import {
   CTableRow,
 } from '@coreui/react'
 import toast from '../../components/Alert'
+import CIcon from '@coreui/icons-react'
+import { cilChart, cilTrash, cilPencil } from '@coreui/icons'
 
 const SurveyList = () => {
   const [data, setData] = useState([])
@@ -27,6 +29,9 @@ const SurveyList = () => {
   const editSurveyHandler = (id) => {
     history.push('/SurveyList/edit/' + id)
   }
+  // const reportSurveyHandler = (id) => {
+  //   history.push('/dashboard/' + id)
+  // }
   const searchHandler = (i) => {
     console.log(i)
     if (i.trim().toLowerCase() === '') setData((prev) => initialData)
@@ -119,26 +124,27 @@ const SurveyList = () => {
 
               <CTableDataCell>
                 <CRow>
-                  <CCol>
-                    <CButton
-                      color="secondary"
+                  <CCol className="p-2">
+                    <CIcon
+                      icon={cilPencil}
+                      size="xl"
                       onClick={() => {
                         editSurveyHandler(survey.survey_id)
                       }}
-                    >
-                      Edit
-                    </CButton>
+                    />
                   </CCol>
                   <CCol>
-                    <CButton
-                      color="danger"
+                    <CIcon icon={cilChart} size="xxl" onClick={() => history.push('/dashboard')} />
+                  </CCol>
+                  <CCol>
+                    <CIcon
+                      icon={cilTrash}
+                      size="xxl"
                       onClick={() => {
                         deleteSurveyHandler(survey.survey_id)
                       }}
                       disabled
-                    >
-                      Delete
-                    </CButton>
+                    />
                   </CCol>
                 </CRow>
               </CTableDataCell>

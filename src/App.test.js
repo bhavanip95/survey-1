@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme/build'
 import App from './App'
-import Dashboard from './views/dashboard/Dashboard.js'
+import Dashboard from './views/questions/ViewReport.js'
 
 it('mounts App without crashing', () => {
   const wrapper = shallow(<App />)

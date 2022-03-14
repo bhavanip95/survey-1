@@ -1,6 +1,6 @@
 import React from 'react'
 import { CChart } from '@coreui/react-chartjs'
-const Dashboard = () => {
+const ViewReport = () => {
   return (
     <CChart
       type="bar"
@@ -18,4 +18,4 @@ const Dashboard = () => {
     />
   )
 }
-export default Dashboard
+export default ViewReport

@@ -115,6 +115,14 @@ const SurveyForm = () => {
   return (
     <CCard>
       <CCardBody>
+        <CRow className="justify-content-end">
+          <CCol xs={2}>
+            <CButton color="link" onClick={() => history.push('/SurveyList')}>
+              Go back
+            </CButton>
+          </CCol>
+        </CRow>
+
         <CForm>
           <div className="mb-3">
             <CFormLabel htmlFor="Survey Title">Survey Title</CFormLabel>
@@ -177,11 +185,6 @@ const SurveyForm = () => {
                 onClick={saveSurveyHandler}
               >
                 Submit
-              </CButton>
-            </CCol>
-            <CCol xs={2}>
-              <CButton color="link" onClick={() => history.push('/SurveyList')}>
-                Go back
               </CButton>
             </CCol>
           </CRow>

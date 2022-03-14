@@ -164,7 +164,7 @@ const Question = (props) => {
           setVisible(false)
           toast('Question deleted!', {
             position: toast.POSITION.TOP_CENTER,
-            type: toast.TYPE.SUCCESS,
+            type: toast.TYPE.INFO,
           })
           setQuestion('')
           listQuestions()
@@ -281,8 +281,9 @@ const Question = (props) => {
                 ></CFormTextarea>
                 <span> </span>
                 <CIcon
+                  className="m-4"
                   icon={cilX}
-                  size="lg"
+                  size="xxl"
                   onClick={(event) => {
                     event.stopPropagation()
                     questionDeleteHandler(item.question_master_id)
