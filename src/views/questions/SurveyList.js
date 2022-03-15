@@ -134,7 +134,7 @@ const SurveyList = () => {
                     />
                   </CCol>
                   <CCol>
-                    <CIcon icon={cilChart} size="xxl" onClick={() => history.push('/dashboard')} />
+                    <CIcon icon={cilChart} size="xxl" onClick={() => history.push('/Report')} />
                   </CCol>
                   <CCol>
                     <CIcon
