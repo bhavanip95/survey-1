@@ -134,16 +134,20 @@ const SurveyList = () => {
                     />
                   </CCol>
                   <CCol>
-                    <CIcon icon={cilChart} size="xxl" onClick={() => history.push('/Report')} />
+                    <CIcon
+                      icon={cilChart}
+                      size="xxl"
+                      onClick={() => history.push('/questionnaire/report/' + survey.survey_id)}
+                    />
                   </CCol>
                   <CCol>
                     <CIcon
                       icon={cilTrash}
                       size="xxl"
+                      disabled
                       onClick={() => {
                         deleteSurveyHandler(survey.survey_id)
                       }}
-                      disabled
                     />
                   </CCol>
                 </CRow>

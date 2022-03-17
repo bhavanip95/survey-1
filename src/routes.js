@@ -8,6 +8,7 @@ const Users = React.lazy(() => import('./views/users/Users'))
 const SurveyForm = React.lazy(() => import('./views/questions/SurveyForm'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 const SurveyEdit = React.lazy(() => import('./views/questions/SurveyEdit'))
+const Report = React.lazy(() => import('./views/questions/Report'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home', component: Login },
@@ -25,6 +26,12 @@ const routes = [
     name: 'Edit',
     component: Question,
   },
+  {
+    path: '/questionnaire/report/:id',
+    name: 'Report',
+    component: Report,
+  },
+
   {
     path: '/SurveyList',
     name: 'SurveyList',
