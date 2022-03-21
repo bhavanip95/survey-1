@@ -1,5 +1,7 @@
 import React from 'react'
 import { CChart } from '@coreui/react-chartjs'
+import { CRow, CCol } from '@coreui/react'
+import { CWidgetStatsF } from '@coreui/react'
 const ViewReport = () => {
   return (
     <h1>Dashboard</h1>
