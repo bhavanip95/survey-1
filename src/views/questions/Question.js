@@ -1,7 +1,5 @@
 import {
   CCard,
-  CCol,
-  CRow,
   CCardBody,
   CCardFooter,
   CCardHeader,
@@ -21,7 +19,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import React, { useState, useEffect } from 'react'
 
-import { cilMove, cilX } from '@coreui/icons'
+import { cilX } from '@coreui/icons'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import toast from '../../components/Alert'
@@ -30,7 +28,7 @@ const Question = (props) => {
   const [visible, setVisible] = useState(false)
   const [question, setQuestion] = useState('')
   const [questions, setQuestions] = useState([])
-  const [categoryName, setCategoryName] = useState('')
+  //const [categoryName, setCategoryName] = useState('')
   // const categoryId = 1
   // const questions = data.filter((obj) => obj.category_id === categoryId)
   const { categoryId } = useParams()

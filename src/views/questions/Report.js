@@ -5,12 +5,15 @@ import axios from 'axios'
 import { CChart } from '@coreui/react-chartjs'
 import { CRow, CCol, CCard, CContainer } from '@coreui/react'
 import { CWidgetStatsB } from '@coreui/react'
+// eslint-disable-next-line no-unused-vars
 import { cibStatuspage } from '@coreui/icons'
 
 const Report = () => {
   const { id } = useParams()
   const [score, setScore] = useState('')
   const [status, setStatus] = useState('')
+  const [respond, setRespond] = useState('')
+  const [endDate, setEnddate] = useState('')
 
   const current = new Date()
   let shortMonth = current.toLocaleString('en-us', { month: 'short' })
@@ -32,13 +35,15 @@ const Report = () => {
       let xData = []
       let yData = []
       response.data.graph_category.map((cat) => {
-        xData.push(cat.question_category)
+        return xData.push(cat.question_category)
       })
       response.data.graph_perc.map((cat) => {
-        yData.push(cat.percantage)
+        return yData.push(cat.percantage)
       })
       setScore(response.data.vri_score)
       setStatus(response.data.status)
+      setRespond(response.data.respond)
+      setEnddate(response.data.survey_enddate)
 
       setX(xData)
       setY(yData)
@@ -52,7 +57,7 @@ const Report = () => {
           <CCol xs={'auto'}>
             <CWidgetStatsB className="mb-3" title="Report Date" value={date} />
           </CCol>
-          <CCol xs={2}>
+          <CCol xs={'auto'}>
             <CWidgetStatsB className="mb-3" color="info" title="VRI Score" value={score} />
           </CCol>
           <CCol xs={'auto'}>
@@ -68,7 +73,7 @@ const Report = () => {
               className="mb-3"
               color="secondary"
               title="Survey Respondents"
-              value="89.9%"
+              value={respond}
             />
           </CCol>
           <CCol xs={'auto'}>
@@ -76,14 +81,15 @@ const Report = () => {
               className="mb-3"
               color="secondary"
               title="Countdown to Survey close"
-              value="89.9%"
+              value={endDate}
             />
           </CCol>
         </CRow>
       </CContainer>
+
       <CChart
+        //style={{ width: '50rem', height: '24rem' }}
         type="bar"
-        height="90vh"
         data={{
           labels: x,
 
